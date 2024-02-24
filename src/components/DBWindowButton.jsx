@@ -5,16 +5,11 @@ import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
 
 import IconButton from '@mui/material/IconButton';
 
-export default function DBWindowButton({sendResponse, switch1}) {
+export default function DBWindowButton({setDMWindowOpen}) {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
 
   const handleWindowOpen = () => {
-    setOpen(true);
-  };
-
-  const handleWindowClose = () => {
-    setOpen(false);
+    setDMWindowOpen(true);
   };
 
   return (
@@ -25,8 +20,6 @@ export default function DBWindowButton({sendResponse, switch1}) {
         onClick={handleWindowOpen}>
         <AirplanemodeActiveIcon sx={{fontSize: 40}}/>
         </IconButton>
-
-        {/*GQL Component*/}
     </Box>
   );
 }
