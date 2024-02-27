@@ -72,7 +72,7 @@ export default function SettingsButton({switch1, setSwitch1}){
                     </IconButton>
                     </DrawerHeader>
                     <Divider />
-                    <FormControlLabel control={<Switch defaultChecked checked={switch1} onChange={setSwitch1} sx = {{left: 10}}/>} label=".    Ulman's Electricity" />
+                    <FormControlLabel control={<Switch checked={switch1} onChange={setSwitch1} sx = {{left: 10}}/>} label=".    Ulman's Electricity" />
                     <Divider /> 
                 </Drawer>
             </ListItem>
