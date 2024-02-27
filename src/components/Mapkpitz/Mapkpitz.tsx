@@ -1,5 +1,11 @@
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { useState, useEffect } from "react";
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  useMapEvents,
+} from "react-leaflet";
+import { useState, useEffect, useRef } from "react";
 import RotatedMarker from "./RotatedMarker";
 import { Plane } from "../../Icons/Icons";
 import L from "leaflet";
@@ -8,13 +14,25 @@ import "./Mapkpitz.css";
 import { Label } from "@mui/icons-material";
 import React from "react";
 import config from "../../config.js";
+import { HeatmapLayer } from "react-leaflet-heatmap-layer-v3";
 
 type direction = 1 | -1;
 
-const Mapkpitz = ({ mapData }) => {
+function KeepLocation({ zoomRef, centerRef }) {
+  const eve = useMapEvents({
+    moveend: () => {
+      zoomRef.current = eve.getZoom();
+      centerRef.current = eve.getCenter();
+    },
+  });
+}
+
+const Mapkpitz = ({ mapData, showHeatMap, heatMapData }) => {
   const [rotationAngle, setRotationAngle] = useState(0);
   const [lat, setLat] = useState(31.58304248898149);
   const [long, setLong] = useState(34.87970835035038);
+  const zoomRef = useRef(7);
+  const centerRef = useRef([31.5, 34.75]);
 
   const handleRotate = () => {
     setRotationAngle((prev) => prev + 21);
@@ -27,19 +45,23 @@ const Mapkpitz = ({ mapData }) => {
     iconAnchor: [15, 15], // center the icon on the marker's position
   });
 
+  const heatmapOptions = {
+    radius: 20,
+    blur: 20,
+    maxZoom: 18,
+  };
   return (
     <>
       <MapContainer
+        center={centerRef.current}
+        zoom={zoomRef.current}
+        key={Math.random()}
         zoomControl={false}
-        center={[31.58304248898149, 34.87970835035038]}
-        zoom={11}
-        style={{
-          height: "100%",
-          width: "100%",
-        }}
+        attributionControl={false}
+        style={{ height: "100vh", width: "100vw", zIndex: 0 }}
       >
         <TileLayer url={config.mapServerUrl} />
-
+        <KeepLocation zoomRef={zoomRef} centerRef={centerRef} />
         {Object.keys(mapData).map((key) => (
           <RotatedMarker
             key={Math.random()}
@@ -57,6 +79,16 @@ const Mapkpitz = ({ mapData }) => {
             </Popup>
           </RotatedMarker>
         ))}
+        {showHeatMap && (
+          <HeatmapLayer
+            points={heatMapData}
+            longitudeExtractor={(point) => point[1]}
+            latitudeExtractor={(point) => point[0]}
+            key={Math.random() + Math.random()}
+            intensityExtractor={(point) => point[2]}
+            {...heatmapOptions}
+          />
+        )}
       </MapContainer>
     </>
   );

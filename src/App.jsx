@@ -3,9 +3,15 @@ import Mapkpitz from "./components/Mapkpitz/Mapkpitz";
 import TopBar from "./components/TopBar"
 import {useState} from "react";
 import axios from 'axios';
+import { Button } from '@mui/material';
 
 function App() {
-  const [mapData, setMapData] = React.useState({
+  const [switch1, setSwitch1] = useState(false);
+  const [DBWindowOpen, setDBWindowOpen] = useState(false);
+  const [insertedQueryJson, setInsertedQueryJson] = useState();
+  const [showHeatMap, setShowHeatMap] = useState(true);
+  const [heatMapData, setHeatMapData] = useState([[32, 34.75, 10]])
+  const [mapData, setMapData] = useState({
     707: {
       "TELE_PP_LAT": 0.55320939623658449857,
       "TELE_PP_LONG": 0.60976575284746381467, 
@@ -18,26 +24,16 @@ function App() {
     }
   });
 
-  const [switch1, setSwitch1] = useState(false);
-
   const updateSwitch1 = (event) => {
     setSwitch1(event.target.checked);
   }
-
-  const [DBWindowOpen, setDBWindowOpen] = useState(false);
-  const updateDBWindowOpen = (open) => {
-    setDBWindowOpen(open);
-  }
-
-  const [insertedQueryJson, setInsertedQueryJson] = useState();
-  //Transform insertedQueryJson to query and run it on the DB
 
   return (
     <>
     <TopBar insertedQueryJson={setInsertedQueryJson} 
         switch1={switch1} updateSwitch1={updateSwitch1} setDBWindowOpen={setDBWindowOpen}/>
     {DBWindowOpen && true /* Best Friends' Component instead of true */}
-    <Mapkpitz mapData={mapData}/>
+    <Mapkpitz mapData={mapData} showHeatMap={showHeatMap} heatMapData={heatMapData}/>
     </>
   );
 }
