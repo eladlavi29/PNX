@@ -53,6 +53,7 @@ function MultiPlaneTable({flights, params, position, mode, show}){
             rows={rows}
             columns={columns}
             hideFooterPagination={true}
+            sx = {{borderRadius: "10px",}}
             style={{fontSize: '12px', }}
 
         />

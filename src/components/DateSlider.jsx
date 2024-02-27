@@ -7,6 +7,7 @@ import {
   Typography,
   Box,
   Container,
+  Drawer,
 } from "@mui/material";
 import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
@@ -15,7 +16,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import FastRewindIcon from "@mui/icons-material/FastRewind";
 
-const DateSlider = ({ start, end, value, setValue, mode, setMode }) => {
+const DateSlider = ({ start, end, value, setValue, mode, setMode, show}) => {
   //const [start, setStart] = useState(new Date("2023-02-11T11:23:00"));
   //const [end, setEnd] = useState(new Date("2023-02-12T19:43:00"));
   const [min, setMin] = useState(0);
@@ -128,19 +129,30 @@ const DateSlider = ({ start, end, value, setValue, mode, setMode }) => {
   };
 
   return (
-    <Container
+    <Drawer
+      anchor="bottom"
+      variant="persistent"
+      open={show}
+      sx={{
+        flexShrink: 0,
+        [`& .MuiDrawer-paper`]: {
+          boxSizing: "border-box",
+          bottom: "15px",
+          left: "10%", // Positioned 15% from the left edge of the screen
+          width: "80%", // Occupying 70% of the screen width
+          borderRadius: "10px",
+        },
+      }}
+      style={{ zIndex: 3 }}
+    >
+    <Box
       style={{
-        position: "fixed",
-        bottom: "15px",
-        left: "10%", // Positioned 15% from the left edge of the screen
-        width: "80%", // Occupying 70% of the screen width
         zIndex: 1000,
         display: "flex",
         alignItems: "center",
         backgroundColor: "#fff",
         padding: "15px",
         borderRadius: "10px",
-        boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
       }}
     >
       <Box
@@ -227,7 +239,8 @@ const DateSlider = ({ start, end, value, setValue, mode, setMode }) => {
           <RemoveIcon />
         </IconButton> */}
       </div>
-    </Container>
+    </Box>
+    </Drawer>
   );
 };
 

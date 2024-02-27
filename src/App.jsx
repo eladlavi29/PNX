@@ -59,7 +59,6 @@ function App() {
     <>
     <TopBar insertedQueryJson={setInsertedQueryJson} 
         switch1={switch1} updateSwitch1={updateSwitch1} setDBWindowOpen={setDBWindowOpen} DBWindowOpen={DBWindowOpen}/>
-    {DBWindowOpen && true /* Best Friends' Component instead of true */}
     {memoMap}
     <ApolloProvider client={client}>
       <MultiFlightTable params={displayParams} flights={flights} position={position} mode={mode} show={DBWindowOpen}/>
@@ -71,6 +70,7 @@ function App() {
         end={dateRange[1]}
         mode={mode}
         setMode={setMode}
+        show={DBWindowOpen}
       />
     </>
   );
