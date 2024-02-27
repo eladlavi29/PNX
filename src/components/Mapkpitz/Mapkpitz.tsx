@@ -15,6 +15,7 @@ import { Label } from "@mui/icons-material";
 import React from "react";
 import config from "../../config.js";
 import { HeatmapLayer } from "react-leaflet-heatmap-layer-v3";
+import { gql, useQuery } from "@apollo/client";
 
 type direction = 1 | -1;
 
@@ -33,7 +34,7 @@ const Mapkpitz = ({ mapData, showHeatMap, heatMapData }) => {
   const [long, setLong] = useState(34.87970835035038);
   const zoomRef = useRef(7);
   const centerRef = useRef([31.5, 34.75]);
-
+  // const { error, loading, data } = useQuery(gql``);
   const handleRotate = () => {
     setRotationAngle((prev) => prev + 21);
   };

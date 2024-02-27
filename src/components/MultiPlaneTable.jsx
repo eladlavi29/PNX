@@ -19,10 +19,11 @@ function MultiPlaneTable({flights, params, position, mode, show}){
     //console.log(`query{flight(fid: 1){row(packet: ${position}){params(names: [${params.map((param) => {return "\""+param+"\""})}]){name value}}}}`)
     const columns = [{ field: 'fid', headerName: 'FID', minWidth: 60, flex: 1 },].concat(params.map((param) => {return {field: param, headerName: param.toUpperCase(), minWidth: 90, flex: 1}}));
     const rows = flights.map((fid) => {
-        const {error, loading, data} = useQuery(gql`query{flight(fid: ${fid}){row(packet: ${position}){params(names: [${params.map((param) => {return "\""+param+"\""})}]){name value}}}}`);
+        const {error, loading, data} = useQuery(gql`query{flight(fid: ${fid}){row(packet: ${98}){params(names: [${params.map((param) => {return "\""+param+"\""})}]){name value}}}}`);
         const dict = {'id': fid, 'fid': fid};
         if (!loading && !error) {
             console.log(loading)
+            console.log(error)
             console.log(data)
             for (const param of data['flight']['row']['params']) {
                 dict[param['name']] = param['value'];

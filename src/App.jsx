@@ -19,11 +19,11 @@ function App() {
   const [DBWindowOpen, setDBWindowOpen] = useState(false);
   const [insertedQueryJson, setInsertedQueryJson] = useState();
   // boolean to determine whether a heatmap should be shown
-  const [showHeatMap, setShowHeatMap] = useState(false);
+  const [showHeatMap, setShowHeatMap] = useState(true);
   // list of lists in the format [lat, long, strngth]. this is the data for the heatmap
   const [heatMapData, setHeatMapData] = useState([[32, 34.75, 10]])
   // list of names of params to display
-  const [displayParams, setDisplayParams] = useState(['tele_rpm', 'tele_heading', 'tele_altitude', 'tele_fuel_kilo'])
+  const [displayParams, setDisplayParams] = useState(['tele_rpm', 'tele_heading', 'tele_altitude', 'tele_fuel_kilo', 'packet'])
   // mode of the playbar
   const [mode, setMode] = useState('ABS')
   // fids of flights to display
@@ -59,8 +59,8 @@ function App() {
     <>
     <TopBar insertedQueryJson={setInsertedQueryJson} 
         switch1={switch1} updateSwitch1={updateSwitch1} setDBWindowOpen={setDBWindowOpen} DBWindowOpen={DBWindowOpen}/>
-    {memoMap}
     <ApolloProvider client={client}>
+      {memoMap}
       <MultiFlightTable params={displayParams} flights={flights} position={position} mode={mode} show={DBWindowOpen}/>
     </ApolloProvider>
     <DateSlider
