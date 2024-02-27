@@ -44,5 +44,5 @@ export function getInputParams(query){
     if(query == '')
         return [];
 
-    return [query + "_param1", query + "_param2"]
+    return [query + "_param1", query + "_param2", query + "_param3"]
 }
