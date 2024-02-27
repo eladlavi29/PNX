@@ -7,7 +7,7 @@ import DBWindowButton from '../components/DBWindowButton'
 
 export default function MenuAppBar({insertedQueryJson, switch1, updateSwitch1, setDBWindowOpen}) {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ width: "100vw"}}>
       <AppBar position="static" color="primary">
         <Toolbar>
           <DrawerButton insertedQueryJson={insertedQueryJson} switch1={switch1} setSwitch1={updateSwitch1}/>
