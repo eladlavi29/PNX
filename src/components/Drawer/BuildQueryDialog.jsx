@@ -41,7 +41,7 @@ function PaperComponent(props) {
   );
 }
 
-export default function BuildQueryDialog({type, query, updateOpen}) {
+export default function BuildQueryDialog({insertedQueryJson, type, query, updateOpen}) {
   const [open, setOpen] = React.useState(true);
 
   const inputParams = getInputParams(query);
@@ -95,10 +95,8 @@ export default function BuildQueryDialog({type, query, updateOpen}) {
               formData.append("query", query);
               formData.append("Input Params", inputParams);
 
-              const formJson = Object.fromEntries(formData.entries());
+              insertedQueryJson(Object.fromEntries(formData.entries()));
 
-              //json
-              console.log(formJson);
               handleClose();
             },
           }}

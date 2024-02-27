@@ -37,7 +37,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
-export default function QueryBuilderButton() {
+export default function QueryBuilderButton({insertedQueryJson}) {
   const possibleQueries = [].concat.apply([], 
     getQueryTypes().map((type) => 
     getQueriesOfType(type).map((query) => 
@@ -156,7 +156,7 @@ export default function QueryBuilderButton() {
         </List>
         <Divider />
         {(openDialog) && (inputQuery.query != '') &&
-          <BuildQueryDialog key={inputQuery.query} type={inputQuery.type} query={inputQuery.query}
+          <BuildQueryDialog insertedQueryJson={insertedQueryJson} key={inputQuery.query} type={inputQuery.type} query={inputQuery.query}
               updateOpen={closeChildDialog}/>}
     </div>
   );

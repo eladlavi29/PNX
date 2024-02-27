@@ -5,8 +5,7 @@ import {useState} from "react";
 import axios from 'axios';
 
 function App() {
-  const [GQLResponse, setGQLResponse] = useState(false);
-  const [mapData, setMapData] = useState({
+  const [MapData, setMapData] = React.useState({
     707: {
       "TELE_PP_LAT": 0.55320939623658449857,
       "TELE_PP_LONG": 0.60976575284746381467, 
@@ -18,14 +17,35 @@ function App() {
       "TELE_HEADING": 69
     }
   });
-  const sendGQLResponse = (response) => {
-    setGQLResponse(response);
+
+  const sendMapData = (response) => {
+    setMapData(response);
   }
+
+  const [switch1, setSwitch1] = React.useState(false);
+
+  const updateSwitch1 = (event) => {
+    setSwitch1(event.target.checked);
+  }
+
+  const [DBWindowOpen, setDBWindowOpen] = React.useState(false);
+  const updateDBWindowOpen = (open) => {
+    setDBWindowOpen(open);
+  }
+
+  const [insertedQueryJson, setInsertedQueryJson] = React.useState();
+  //Transform insertedQueryJson to query and run it on the DB
+  const updateInsertedQueryJson = (json) => {
+    setInsertedQueryJson(json);
+  }
+  console.log(insertedQueryJson);
 
   return (
     <>
-      <TopBar sendResponse={sendGQLResponse}/>
-      <Mapkpitz mapData={mapData}/>
+    <TopBar insertedQueryJson={updateInsertedQueryJson} 
+        switch1={switch1} updateSwitch1={updateSwitch1} setDBWindowOpen={setDBWindowOpen}/>
+    {DBWindowOpen && true /* Best Friends' Component instead of true */}
+    <Mapkpitz mapData={mapData}/>
     </>
   );
 }
