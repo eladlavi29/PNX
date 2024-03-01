@@ -28,7 +28,7 @@ import BlurLinearRoundedIcon from '@mui/icons-material/BlurLinearRounded';
 import FmdGoodRoundedIcon from '@mui/icons-material/FmdGoodRounded';
 import MapRoundedIcon from '@mui/icons-material/MapRounded';
 
-import {getInputParams} from '../../DjangoCommunication'
+import {getInputParams, getFinalQuery} from '../../DjangoCommunication'
 
 function PaperComponent(props) {
   return (
@@ -45,6 +45,7 @@ export default function BuildQueryDialog({insertedQueryJson, type, query, update
   const [open, setOpen] = React.useState(true);
 
   const inputParams = getInputParams(query);
+  const [inputParamsVals, setInputParamsVals] = React.useState([]);
 
   const [region, setRegion] = React.useState("");
 
@@ -88,12 +89,17 @@ export default function BuildQueryDialog({insertedQueryJson, type, query, update
               event.preventDefault();
               const formData = new FormData(event.currentTarget);
               formData.append("region", region);
-              formData.append("Date From", dateFrom);
-              formData.append("Date To", dateTo);
-              formData.append("Time From", timeFrom);
-              formData.append("Time to", timeTo);
+              formData.append("dateFrom", dateFrom);
+              formData.append("dateTo", dateTo);
+              formData.append("timeFrom", timeFrom);
+              formData.append("timeTo", timeTo);
               formData.append("query", query);
-              formData.append("Input Params", inputParams);
+              inputParams.map((param, index) => (
+                formData.append(param, inputParamsVals[index])
+              ));
+              
+              const finalQuery = getFinalQuery(Object.fromEntries(formData.entries()))
+              console.log(finalQuery);
 
               insertedQueryJson(Object.fromEntries(formData.entries()));
 
@@ -114,7 +120,7 @@ export default function BuildQueryDialog({insertedQueryJson, type, query, update
         </DialogTitle>
         
         <DialogContent >
-        {inputParams.map((param) => (
+        {inputParams.map((param, index) => (
             <TextField
                 sx={{   
                     margin:2
@@ -124,6 +130,11 @@ export default function BuildQueryDialog({insertedQueryJson, type, query, update
                 id={param}
                 name= {param}
                 label= {param}
+                onChange={(event)=>setInputParamsVals({
+                  ...inputParamsVals,
+                  [index]: (event.target.value)
+                })}
+                value= {inputParamsVals[index]}
                 variant="standard"
             />
         ))}

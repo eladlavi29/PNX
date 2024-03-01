@@ -12,8 +12,6 @@ const client = new ApolloClient({
   uri: 'http://localhost:4000',
   cache: new InMemoryCache()
 });
-import Map from "./components/Map";
-import TopBar from "./components/TopBar"  
 
 function App() {
   const [switch1, setSwitch1] = useState(false);

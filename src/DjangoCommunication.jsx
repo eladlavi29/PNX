@@ -46,3 +46,45 @@ export function getInputParams(query){
 
     return [query + "_param1", query + "_param2", query + "_param3"]
 }
+
+function queryNameToQueryTemplate(query){
+  //Format:
+  //for param in 
+  //{region, dateFrom, dateTo, timeFrom, timeTo} U {sepcificParam | specificParam is in getInputParams(query)}
+  //$param$ will be replaced with the given input param
+  const param1 = 'param1: %' + query + "_param1%,"  
+  const param2 = 'param2: %' + query + "_param2%,"
+  const param3 = 'param3: %' + query + "_param3%,"
+
+  return param1 + " " + param2 + " " + param3 + " region: %region%, from date: %fromDate%, to date: %toDate%, from time: %fromTime%, to time: %toTime%"
+}
+
+function replaceEmptyParamWithValue(paramNames, paramVals, template){
+  for (let i = 0; i < paramNames.length; i++) {
+    const regex = new RegExp('%' + paramNames[i] + '%', 'g');
+
+    template = template.replace(regex, paramVals[i]);
+  }
+
+  return template;
+}
+
+export function getFinalQuery(jsonParams){
+
+  const template = queryNameToQueryTemplate(jsonParams.query);
+
+  const paramNames = getInputParams(jsonParams.query).concat(["region", "fromDate", "toDate", "fromTime", "toTime"]);
+  
+  let inputParamsVals = getInputParams(jsonParams.query).map((param) => (
+    jsonParams[param]
+  ));
+
+  const paramVals = inputParamsVals.concat([jsonParams.region, jsonParams.dateFrom, 
+    jsonParams.dateTo, jsonParams.timeFrom, jsonParams.timeTo]);
+
+  console.log(paramVals);
+
+  return replaceEmptyParamWithValue(paramNames, paramVals, template);//queryNameToQueryTemplate(query);
+}
+
+
