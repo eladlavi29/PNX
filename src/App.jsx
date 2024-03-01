@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Map from "./components/Map";
-import TopBar from "./components/TopBar"
+import TopBar from "./components/TopBar"  
 
 function App() {
   const [MapData, setMapData] = React.useState(false);
