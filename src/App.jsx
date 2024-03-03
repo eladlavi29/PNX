@@ -1,12 +1,13 @@
 import * as React from 'react';
 import Mapkpitz from "./components/Mapkpitz/Mapkpitz";
 import TopBar from "./components/TopBar"
-import {useState, useMemo} from "react";
+import {useState, useMemo, useEffect} from "react";
 import axios from 'axios';
 import DateSlider from './components/DateSlider.jsx';
 import { Button } from '@mui/material';
 import MultiFlightTable from './components/MultiPlaneTable.jsx';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import CalculateFlights from './components/CalculateFlights.jsx'
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
@@ -26,8 +27,8 @@ function App() {
   const [displayParams, setDisplayParams] = useState(['tele_rpm', 'tele_heading', 'tele_altitude', 'tele_fuel_kilo', 'packet'])
   // mode of the playbar
   const [mode, setMode] = useState('ABS')
-  // fids of flights to display
-  const [flights, setFlights] = useState([1, 2])
+  // fids and dates of flights to display
+  const [flights, setFlights] = useState({1: [new Date("2024-01-14T23:40:06"), new Date("2024-01-15T00:40:01")], 2: [new Date("2024-01-17T09:07:51"), new Date("2024-01-17T09:25:44")]})
   // position of playbar (circle thing in the playbar), time selected by playbar
   const [position, setPosition] = useState(0)
   // start and end date (in seconds) of all flights combined
@@ -45,6 +46,8 @@ function App() {
       "TELE_HEADING": 69
     }
   });
+
+  useEffect(() => {CalculateFlights(flights, position, mode, setMapData, client, displayParams)}, [flights, position, mode, setMapData])
 
   const updateSwitch1 = (event) => {
     setSwitch1(event.target.checked);
