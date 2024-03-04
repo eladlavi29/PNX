@@ -83,8 +83,8 @@ const Mapkpitz = ({ mapData, showHeatMap, heatMapData }) => {
         {showHeatMap && (
           <HeatmapLayer
             points={heatMapData}
-            longitudeExtractor={(point) => point[1]}
-            latitudeExtractor={(point) => point[0]}
+            longitudeExtractor={(point) => (point[1] * 180.0) / Math.PI}
+            latitudeExtractor={(point) => (point[0] * 180.0) / Math.PI}
             key={Math.random() + Math.random()}
             intensityExtractor={(point) => point[2]}
             {...heatmapOptions}

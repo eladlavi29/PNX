@@ -26,7 +26,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
-export default function DrawerButton({insertedQueryJson, switch1, setSwitch1}) {
+export default function DrawerButton({insertedQueryJson, switch1, setSwitch1, setHeatMapData}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -71,7 +71,7 @@ export default function DrawerButton({insertedQueryJson, switch1, setSwitch1}) {
             <div key= {text}>
             {(() => {
                 switch(text) {
-                    case 'Build Query': return <QueryBuilderButton insertedQueryJson={insertedQueryJson}/>
+                    case 'Build Query': return <QueryBuilderButton insertedQueryJson={insertedQueryJson} setHeatMapData={setHeatMapData}/>
                     case 'History': return <HistoryButton />
                     case 'Settings': return <SettingsButton switch1={switch1} setSwitch1={setSwitch1} />
                     case 'Help': return <HelpButton />
