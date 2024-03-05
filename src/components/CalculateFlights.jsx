@@ -58,8 +58,6 @@ export async function CalculateFlights(flights, position, mode, setMapData, clie
             let totalData = {}
             let time = new Date(position * 1000 + dateRange[0].getTime()) 
             for (let fid in flights) {
-                //console.log(position)
-                //console.log(`${fid}: ${time}`)
                 if (client) {
                     const {data, error} = await client.query({
                         query: gql`
