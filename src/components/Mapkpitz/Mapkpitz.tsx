@@ -42,8 +42,8 @@ const Mapkpitz = ({ mapData, showHeatMap, heatMapData }) => {
   // Modify the icon size to make it bigger
   const customIcon = new L.Icon({
     iconUrl: "/uav.png", // assuming Plane is the path to your icon image
-    iconSize: [100, 100], // adjust the size as needed
-    iconAnchor: [50, 50], // center the icon on the marker's position
+    iconSize: [60, 60], // adjust the size as needed
+    iconAnchor: [30, 30], // center the icon on the marker's position
   });
 
   const heatmapOptions = {
@@ -92,8 +92,7 @@ const Mapkpitz = ({ mapData, showHeatMap, heatMapData }) => {
             rotationOrigin="center"
           >
             <Popup>
-              Tail Number: {key}, LAT: {mapData[key].tele_pp_lat}, LONG:{" "}
-              {mapData[key].tele_pp_long}
+              fid: {key} | altitude: {mapData[key].tele_altitude}ft
             </Popup>
           </RotatedMarker>
         ))}
