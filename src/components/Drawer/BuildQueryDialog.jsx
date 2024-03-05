@@ -108,6 +108,9 @@ export default function BuildQueryDialog({insertedQueryJson, type, query, update
               if (query_name=="RPM_FOR_FID"){
                 exeQuery(finalQuery, query_name, setHeatMapData)
               }
+              if (query_name=="Plane_1"){
+                exeQuery(finalQuery, query_name, null)
+              }
               
 
               handleClose();

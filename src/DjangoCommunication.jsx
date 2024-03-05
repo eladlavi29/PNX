@@ -85,7 +85,7 @@ function queryNameToQueryTemplate(query, paramVals){
 
     case 'Plane_1':
       let built_query_1 = gql`query{
-        heat_map(query: "select tele_pp_lat as lat,tele_pp_long as lon,tele_rpm as strength from fast_params where fid=${paramVals[0]} and tele_pp_lat!=0 and tele_pp_long!=0") {lat lon strength}
+        get_flights(query: "select fid, recording_start as start, recording_end as end from metadata where fid=${paramVals[0]}") {fid start end}
       }`
       return built_query_1
 
@@ -137,10 +137,15 @@ function fix_data_structure(data, query_name){
       return res;
 
     case 'Plane_1':
-      let res1 =  (data["heat_map"]).map((dict) => (
-        ([dict["lat"],dict["lon"],dict["strength"]])
-      ));
-      return res1;
+      let dict = (data["get_flights"])[0]
+
+      let d_start = new Date('1970-01-01 00:00:00');
+      d_start.setSeconds(d_start.getSeconds() + Math.floor(dict["start"]/1000));
+      
+      let d_end = new Date('1970-01-01 00:00:00');
+      d_end.setSeconds(d_end.getSeconds() + Math.floor(dict["end"]/1000));
+
+      return {"fid": dict["fid"], "start": d_start, "end": d_end};
 
     case 'START_END_FOR_FID':
       return  [(data["marker_map"])]
@@ -166,9 +171,9 @@ export async function exeQuery(query, query_name, func){
   
   console.log("RES: ", res)
 
-  console.log(func)
-
-  func(res)
+  if (func!=null){
+    func(res)
+  }
 }
 
 
