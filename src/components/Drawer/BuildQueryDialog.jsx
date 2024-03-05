@@ -28,7 +28,7 @@ import BlurLinearRoundedIcon from '@mui/icons-material/BlurLinearRounded';
 import FmdGoodRoundedIcon from '@mui/icons-material/FmdGoodRounded';
 import MapRoundedIcon from '@mui/icons-material/MapRounded';
 
-import {getInputParams, getFinalQuery} from '../../DjangoCommunication'
+import {getInputParams, getFinalQuery, exeQuery} from '../../DjangoCommunication'
 
 function PaperComponent(props) {
   return (
@@ -41,7 +41,7 @@ function PaperComponent(props) {
   );
 }
 
-export default function BuildQueryDialog({insertedQueryJson, type, query, updateOpen}) {
+export default function BuildQueryDialog({insertedQueryJson, type, query, updateOpen, setHeatMapData}) {
   const [open, setOpen] = React.useState(true);
 
   const inputParams = getInputParams(query);
@@ -99,9 +99,19 @@ export default function BuildQueryDialog({insertedQueryJson, type, query, update
               ));
               
               const finalQuery = getFinalQuery(Object.fromEntries(formData.entries()))
-              console.log(finalQuery);
+              const query_name = (Object.fromEntries(formData.entries())).query
+              
+              console.log("QUERY: ", finalQuery);
 
               insertedQueryJson(Object.fromEntries(formData.entries()));
+              
+              if (query_name=="RPM_FOR_FID"){
+                exeQuery(finalQuery, query_name, setHeatMapData)
+              }
+              if (query_name=="Plane_1"){
+                exeQuery(finalQuery, query_name, null)
+              }
+              
 
               handleClose();
             },

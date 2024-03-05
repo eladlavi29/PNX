@@ -22,7 +22,7 @@ function App() {
   // boolean to determine whether a heatmap should be shown
   const [showHeatMap, setShowHeatMap] = useState(false);
   // list of lists in the format [lat, long, strngth]. this is the data for the heatmap
-  const [heatMapData, setHeatMapData] = useState([[32, 34.75, 10]])
+  const [heatMapData, setHeatMapData] = useState([[(32 * Math.PI) / 180.0, (34.75 * Math.PI) / 180.0, 10]])
   // list of names of params to display
   const [displayParams, setDisplayParams] = useState(['tele_rpm', 'tele_altitude', 'tele_fuel_kilo', 'packet', 'tele_pp_lat', 'tele_pp_long', 'tele_heading'])
   // mode of the playbar
@@ -63,7 +63,7 @@ function App() {
   return (
     <>
     <TopBar insertedQueryJson={setInsertedQueryJson} 
-        switch1={switch1} updateSwitch1={updateSwitch1} setDBWindowOpen={setDBWindowOpen} DBWindowOpen={DBWindowOpen}/>
+        switch1={switch1} updateSwitch1={updateSwitch1} setDBWindowOpen={setDBWindowOpen} DBWindowOpen={DBWindowOpen} setHeatMapData={setHeatMapData}/>
     <ApolloProvider client={client}>
       {memoMap}
       
