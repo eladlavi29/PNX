@@ -191,7 +191,7 @@ const DateSlider = ({ start, end, value, setValue, mode, setMode, show}) => {
         value={value}
         onChange={(event, newValue) => setValue(newValue)}
         aria-labelledby="continuous-slider"
-        style={{ flex: "2", marginRight: "20px" }}
+        style={{ flex: "2", marginRight: "20px"}}
         min={min}
         max={max}
         step={1}
@@ -201,7 +201,7 @@ const DateSlider = ({ start, end, value, setValue, mode, setMode, show}) => {
         valueLabelFormat={
           mode == "REL" ? calculatePercantage : calculateNewDate
         }
-        valueLabelDisplay="auto"
+        valueLabelDisplay="off"
       />
       <Box
         style={{
