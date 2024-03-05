@@ -51,7 +51,7 @@ const DateSlider = ({ start, end, value, setValue, mode, setMode, show}) => {
     if (mode === "REL") {
       setMax(100);
       setValue(50);
-      setStep(1);
+      setStep(0.1);
       console.log(value);
     } else {
       let differenceInSeconds = calculateDateDifferenceInSeconds(start, end);
@@ -68,7 +68,7 @@ const DateSlider = ({ start, end, value, setValue, mode, setMode, show}) => {
     } else {
       intervalRef.current = setInterval(() => {
         setValue((prevValue) => Math.min(prevValue + step, max));
-      }, 100); // Adjust the interval as needed
+      }, 1); // Adjust the interval as needed
     }
     console.log(value);
     console.log(max);
