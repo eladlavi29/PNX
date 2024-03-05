@@ -56,27 +56,44 @@ const Mapkpitz = ({ mapData, showHeatMap, heatMapData }) => {
       <MapContainer
         center={centerRef.current}
         zoom={zoomRef.current}
-        key={Math.random()}
+        key={1}
         zoomControl={false}
         attributionControl={false}
         style={{ height: "100vh", width: "100vw", zIndex: 0 }}
       >
         <TileLayer url={config.mapServerUrl} />
         <KeepLocation zoomRef={zoomRef} centerRef={centerRef} />
+
+        {/* <RotatedMarker
+          key={Math.random()}
+          position={[
+            mapData[1].tele_pp_lat * (180 / Math.PI),
+            mapData[1].tele_pp_long * (180 / Math.PI),
+          ]}
+          icon={customIcon} // Use the custom icon
+          rotationAngle={mapData[1].tele_heading}
+          rotationOrigin="center"
+        >
+          <Popup>
+            Tail Number: {1}, LAT: {mapData[1].tele_pp_lat}, LONG:{" "}
+            {mapData[1].tele_pp_long}
+          </Popup>
+        </RotatedMarker> */}
+
         {Object.keys(mapData).map((key) => (
           <RotatedMarker
-            key={Math.random()}
+            key={key}
             position={[
-              mapData[key].TELE_PP_LAT * (180 / Math.PI),
-              mapData[key].TELE_PP_LONG * (180 / Math.PI),
+              mapData[key].tele_pp_lat * (180 / Math.PI),
+              mapData[key].tele_pp_long * (180 / Math.PI),
             ]}
             icon={customIcon} // Use the custom icon
-            rotationAngle={mapData[key].TELE_HEADING}
+            rotationAngle={mapData[key].tele_heading}
             rotationOrigin="center"
           >
             <Popup>
-              Tail Number: {key}, LAT: {mapData[key].TELE_PP_LAT}, LONG:{" "}
-              {mapData[key].TELE_PP_LONG}
+              Tail Number: {key}, LAT: {mapData[key].tele_pp_lat}, LONG:{" "}
+              {mapData[key].tele_pp_long}
             </Popup>
           </RotatedMarker>
         ))}
