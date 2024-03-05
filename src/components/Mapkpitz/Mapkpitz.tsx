@@ -41,9 +41,9 @@ const Mapkpitz = ({ mapData, showHeatMap, heatMapData }) => {
 
   // Modify the icon size to make it bigger
   const customIcon = new L.Icon({
-    iconUrl: "/plane.png", // assuming Plane is the path to your icon image
-    iconSize: [70, 70], // adjust the size as needed
-    iconAnchor: [15, 15], // center the icon on the marker's position
+    iconUrl: "/uav.png", // assuming Plane is the path to your icon image
+    iconSize: [100, 100], // adjust the size as needed
+    iconAnchor: [50, 50], // center the icon on the marker's position
   });
 
   const heatmapOptions = {

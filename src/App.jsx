@@ -35,6 +35,7 @@ function App() {
   const [dateRange, setDateRange] = useState([new Date("2023-02-11T11:23:00"), new Date("2023-02-12T19:43:00")])
   // dictionary with plane data for the map
   const [mapData, setMapData] = useState({});
+  // const [mapData, setMapData] = useState({
   //   1: {
   //     "tele_pp_lat": 0.55320939623658449857,
   //     "tele_pp_long": 0.60976575284746381467, 
