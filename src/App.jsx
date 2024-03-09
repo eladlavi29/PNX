@@ -23,6 +23,97 @@ function App() {
   const [showHeatMap, setShowHeatMap] = useState(false);
   // list of lists in the format [lat, long, strngth]. this is the data for the heatmap
   const [heatMapData, setHeatMapData] = useState([[(32 * Math.PI) / 180.0, (34.75 * Math.PI) / 180.0, 10]])
+  // boolean to determine whether a markermap should be shown
+  const [showMarkerMap, setShowMarkerMap] = useState(false);
+  // list of lists in the format [lat, long, strngth]. this is the data for the heatmap
+  const [markerMapData, setMarkerMapData] = useState();
+  //   [
+  //     [
+  //         {"lat": 0.57, "long": 0.618, "content": "temperature: 25, humidity: 40"},
+  //         {"lat": 0.56, "long": 0.619, "content": "temperature: 28, humidity: 35"}
+  //     ],
+  //     [
+  //         {"lat": 0.54, "long": 0.6122, "content": "altitude: 500, pressure: 1010"},
+  //         {"lat": 0.57, "long": 0.61, "content": "altitude: 550, pressure: 1005"},
+  //         {"lat": 0.51, "long": 0.614, "content": "altitude: 480, pressure: 1015"}
+  //     ],
+  //     [
+  //         {"lat": 0.59, "long": 0.612, "content": "wind_speed: 15, wind_direction: 120"},
+  //         {"lat": 0.58, "long": 0.6111, "content": "wind_speed: 10, wind_direction: 90"},
+  //         {"lat": 0.575, "long": 0.613, "content": "wind_speed: 20, wind_direction: 150"}
+  //     ],
+  //     [
+  //         {"lat": 0.568, "long": 0.611, "content": "battery_level: 80, power_consumption: 30"},
+  //         {"lat": 0.577, "long": 0.615, "content": "battery_level: 90, power_consumption: 25"},
+  //         {"lat": 0.57, "long": 0.61, "content": "battery_level: 75, power_consumption: 35"}
+  //     ],
+  //     [
+  //         {"lat": 0.54, "long": 0.60, "content": "health_status: normal, heart_rate: 80"},
+  //         {"lat": 0.55, "long": 0.604, "content": "health_status: alert, heart_rate: 95"}
+  //     ],
+  //     [
+  //         {"lat": 0.57, "long": 0.62, "content": "population: 1000, pollution_level: low"},
+  //         {"lat": 0.56, "long": 0.61, "content": "population: 1000, pollution_level: low"}
+  //     ],
+  //     [
+  //         {"lat": 0.555, "long": 0.617, "content": "precipitation: 5, cloud_coverage: 20"},
+  //         {"lat": 0.552, "long": 0.618, "content": "precipitation: 10, cloud_coverage: 15"}
+  //     ],
+  //     [
+  //         {"lat": 0.563, "long": 0.614, "content": "soil_moisture: 30, soil_temperature: 18"},
+  //         {"lat": 0.565, "long": 0.615, "content": "soil_moisture: 25, soil_temperature: 20"}
+  //     ],
+  //     [
+  //         {"lat": 0.558, "long": 0.612, "content": "air_quality: good, pollutant_levels: low"},
+  //         {"lat": 0.559, "long": 0.611, "content": "air_quality: moderate, pollutant_levels: moderate"}
+  //     ],
+  //     [
+  //         {"lat": 0.566, "long": 0.616, "content": "traffic_flow: smooth, congestion_level: low"},
+  //         {"lat": 0.564, "long": 0.615, "content": "traffic_flow: congested, congestion_level: high"}
+  //     ],
+  //     [
+  //         {"lat": 0.573, "long": 0.619, "content": "crop_status: healthy, growth_stage: flowering"},
+  //         {"lat": 0.571, "long": 0.618, "content": "crop_status: stressed, growth_stage: maturing"}
+  //     ],
+  //     [
+  //         {"lat": 0.552, "long": 0.614, "content": "solar_radiation: 600, UV_index: 8"},
+  //         {"lat": 0.554, "long": 0.615, "content": "solar_radiation: 550, UV_index: 7"}
+  //     ],
+  //     [
+  //         {"lat": 0.561, "long": 0.616, "content": "fire_hazard: low, fire_weather_index: 2"},
+  //         {"lat": 0.564, "long": 0.618, "content": "fire_hazard: moderate, fire_weather_index: 3"}
+  //     ],
+  //     [
+  //         {"lat": 0.573, "long": 0.611, "content": "ocean_temperature: 22, salinity: 35"},
+  //         {"lat": 0.575, "long": 0.613, "content": "ocean_temperature: 20, salinity: 33"}
+  //     ],
+  //     [
+  //         {"lat": 0.565, "long": 0.616, "content": "wildlife_population: abundant, species_diversity: high"},
+  //         {"lat": 0.562, "long": 0.617, "content": "wildlife_population: scarce, species_diversity: low"}
+  //     ],
+  //     [
+  //         {"lat": 0.558, "long": 0.61, "content": "moon_phase: waxing_gibbous, illumination: 75"},
+  //         {"lat": 0.556, "long": 0.609, "content": "moon_phase: waning_crescent, illumination: 40"}
+  //     ],
+  //     [
+  //         {"lat": 0.559, "long": 0.616, "content": "geological_activity: stable, seismic_intensity: low"},
+  //         {"lat": 0.557, "long": 0.615, "content": "geological_activity: active, seismic_intensity: moderate"}
+  //     ],
+  //     [
+  //         {"lat": 0.564, "long": 0.611, "content": "construction_activity: ongoing, noise_level: moderate"},
+  //         {"lat": 0.567, "long": 0.612, "content": "construction_activity: paused, noise_level: low"}
+  //     ],
+  //     [
+  //         {"lat": 0.57, "long": 0.618, "content": "event_attendance: 500, event_type: concert"},
+  //         {"lat": 0.569, "long": 0.617, "content": "event_attendance: 1000, event_type: conference"}
+  //     ],
+  //     [
+  //         {"lat": 0.555, "long": 0.613, "content": "sport_score: team_a 3, team_b 2"},
+  //         {"lat": 0.556, "long": 0.614, "content": "sport_score: team_a 4, team_b 1"}
+  //     ]
+  //   ]
+  
+  // )
   // list of names of params to display
   const [displayParams, setDisplayParams] = useState(['tele_rpm', 'tele_altitude', 'tele_fuel_kilo', 'packet', 'tele_pp_lat', 'tele_pp_long', 'tele_heading'])
   // mode of the playbar
@@ -39,12 +130,14 @@ function App() {
   //   1: {
   //     "tele_pp_lat": 0.55320939623658449857,
   //     "tele_pp_long": 0.60976575284746381467, 
-  //     "tele_heading": 25
+  //     "tele_heading": 25,
+  //     "tele_altitude": 5954
   //   }, 
   //   2: {
   //     "tele_pp_lat": 0.55120939623658449857,
   //     "tele_pp_long": 0.60876575284746381467,
-  //     "tele_heading": 69
+  //     "tele_heading": 69,
+  //     "tele_altitude": 5454
   //   }
   // });
 
@@ -56,7 +149,7 @@ function App() {
   }
 
   const memoMap = useMemo(
-    () => <Mapkpitz mapData={mapData} showHeatMap={showHeatMap} heatMapData={heatMapData}/>,
+    () => <Mapkpitz mapData={mapData} showHeatMap={showHeatMap} heatMapData={heatMapData} showMarkerMap={showMarkerMap} markerMapData={markerMapData}/>,
     [showHeatMap, heatMapData, mapData]
   );
 
