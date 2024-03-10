@@ -21,6 +21,15 @@ types is a dictionary itself, keys are types of queires, and values are a list o
 example:
 'Heat Map': ['RPM_FOR_FID']
 (used for more efficiency)
+
+param types:
+{
+    Number for int type
+    Region for region type
+    String for string type
+    Date for date type
+    Time for time type
+}
 """
 
 def create_json_queries():
@@ -38,8 +47,12 @@ def create_json_queries():
         marker_map(query: "(select fast_params.tele_pp_lat as lat,fast_params.tele_pp_long as lon,'start' as content from fast_params,flight_to_fid where fast_params.fid=$fid$ and flight_to_fid.fid=$fid$ and fast_params.tele_pp_lat!=0 and fast_params.tele_pp_long!=0 order by packet asc limit 1) UNION ALL (select fast_params.tele_pp_lat as lat,fast_params.tele_pp_long as lon,'end' as content from fast_params,flight_to_fid where fast_params.fid=$fid$ and flight_to_fid.fid=$fid$ and fast_params.tele_pp_lat!=0 and fast_params.tele_pp_long!=0 order by packet desc limit 1)") {
         lat lon content
         }'''}
+
+    dict_queries['STAM'] = {'type':'Marker Map', 'params':['fid', 'number', 'string', 'region', 'dateFrom', 'dateTo', 'timeFrom', 'timeTo'], 'params_types':['Number', 'Number', 'String', 'Region', 'Date', 'Date', 'Time', 'Time'], 'template': '''query{
+        fid: $fid$, number: $number$, string: $string$, region: $region, dateFrom: $dateFrom$, dateTo: $dateTo$, timeFrom: $timeFrom$, timeTo: $timeTo$
+        }'''}
     
-    dict_types = {'Heat Map': ['RPM_FOR_FID'], 'Marker Map':['START_END_FOR_FID'] , 'Plane':['Plane_1'] }
+    dict_types = {'Heat Map': ['RPM_FOR_FID'], 'Marker Map':['START_END_FOR_FID', 'STAM'] , 'Plane':['Plane_1'] }
     
     total_dict = {'queries':dict_queries, 'types': dict_types}
   

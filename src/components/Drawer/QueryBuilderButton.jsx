@@ -60,7 +60,7 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData}) 
 
     const handleQueryBuilderOpen = () => {
       if((inputQuery.query != '')){
-        insertToHistory({ ...inputQuery });
+        //insertToHistory({ ...inputQuery });
         setOpenDialog(true);
         setOpen(false);
       }
@@ -114,7 +114,7 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData}) 
                       options={possibleQueries.map((query) => (
                           query.query
                       ))}
-                      sx={{ width: 300 }}
+                      sx={{ width: 300 , m:1}}
                       renderInput={(params) => 
                         <TextField {...params} label="Query" />
                       }
@@ -156,7 +156,7 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData}) 
         </List>
         <Divider />
         {(openDialog) && (inputQuery.query != '') &&
-          <BuildQueryDialog insertedQueryJson={insertedQueryJson} key={inputQuery.query} type={inputQuery.type} query={inputQuery.query} setHeatMapData={setHeatMapData}
+          <BuildQueryDialog insertedQueryJson={insertedQueryJson} key={inputQuery.query} query={inputQuery} updateQuery={setInputQuery} insertToHistory={insertToHistory} setHeatMapData={setHeatMapData}
               updateOpen={closeChildDialog}/>}
     </div>
   );

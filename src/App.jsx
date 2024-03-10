@@ -16,6 +16,7 @@ const client = new ApolloClient({
 
 function App() {
   const [switch1, setSwitch1] = useState(false);
+  const [barSpeed, setBarSpeed] = useState();
   // boolean to open and close the plane data table
   const [DBWindowOpen, setDBWindowOpen] = useState(false);
   const [insertedQueryJson, setInsertedQueryJson] = useState();
@@ -55,6 +56,10 @@ function App() {
     setSwitch1(event.target.checked);
   }
 
+  const updateBarSpeed = (event) => {
+    setBarSpeed(event.target.checked);
+  }
+
   const memoMap = useMemo(
     () => <Mapkpitz mapData={mapData} showHeatMap={showHeatMap} heatMapData={heatMapData}/>,
     [showHeatMap, heatMapData, mapData]
@@ -63,7 +68,9 @@ function App() {
   return (
     <>
     <TopBar insertedQueryJson={setInsertedQueryJson} 
-        switch1={switch1} updateSwitch1={updateSwitch1} setDBWindowOpen={setDBWindowOpen} DBWindowOpen={DBWindowOpen} setHeatMapData={setHeatMapData}/>
+        switch1={switch1} updateSwitch1={updateSwitch1}
+        barSpeed={barSpeed} updateBarSpeed={updateBarSpeed}
+        setDBWindowOpen={setDBWindowOpen} DBWindowOpen={DBWindowOpen} setHeatMapData={setHeatMapData}/>
     <ApolloProvider client={client}>
       {memoMap}
       

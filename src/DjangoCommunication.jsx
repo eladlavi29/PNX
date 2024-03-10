@@ -22,6 +22,10 @@ export function getInputParams(query_name){
   return ((queries_dict['queries'])[query_name])['params']
 }
 
+export function getInputParamsTypes(query_name){
+  return ((queries_dict['queries'])[query_name])['params_types']
+}
+
 function queryNameToQueryTemplate(query_name, paramVals){  
   let template =  ((queries_dict['queries'])[query_name])['template']
   let paramNames = getInputParams(query_name)
