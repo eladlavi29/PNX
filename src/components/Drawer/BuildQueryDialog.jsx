@@ -36,7 +36,7 @@ function PaperComponent(props) {
   );
 }
 
-export default function BuildQueryDialog({insertedQueryJson, query, updateQuery, insertToHistory, updateOpen, setHeatMapData}) {
+export default function BuildQueryDialog({insertedQueryJson, query, updateQuery, insertToHistory, updateOpen, setHeatMapData, setShowHeatMap, setFlights}) {
   const [open, setOpen] = React.useState(true);
 
   const inputParams = getInputParams(query.query);
@@ -103,10 +103,11 @@ export default function BuildQueryDialog({insertedQueryJson, query, updateQuery,
               
               if (query_type=="Heat Map"){
                 console.log("HERE1")
-                exeQuery(finalQuery, query_name, setHeatMapData)
+                let res = exeQuery(finalQuery, query_name, setHeatMapData)
+                setShowHeatMap(res)
               }
               if (query_type=="Plane"){
-                exeQuery(finalQuery, query_name, null)
+                exeQuery(finalQuery, query_name, setFlights)
               }
               
               handleClose();

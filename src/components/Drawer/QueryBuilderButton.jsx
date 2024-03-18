@@ -37,7 +37,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
-export default function QueryBuilderButton({insertedQueryJson, setHeatMapData}) {
+export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, setShowHeatMap, setFlights}) {
   const possibleQueries = [].concat.apply([], 
     getQueryTypes().map((type) => 
     getQueriesOfType(type).map((query) => 
@@ -157,7 +157,7 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData}) 
         <Divider />
         {(openDialog) && (inputQuery.query != '') &&
           <BuildQueryDialog insertedQueryJson={insertedQueryJson} key={inputQuery.query} query={inputQuery} updateQuery={setInputQuery} insertToHistory={insertToHistory} setHeatMapData={setHeatMapData}
-              updateOpen={closeChildDialog}/>}
+              updateOpen={closeChildDialog} setShowHeatMap={setShowHeatMap} setFlights={setFlights} />}
     </div>
   );
 }

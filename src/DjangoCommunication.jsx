@@ -79,8 +79,11 @@ function fix_data_structure(data, query_name){
       
       let d_end = new Date('1970-01-01 00:00:00');
       d_end.setSeconds(d_end.getSeconds() + Math.floor(dict["end"]/1000));
-
-      return {"fid": dict["fid"], "start": d_start, "end": d_end};
+      let fid_1 = dict["fid"]
+      var obj = {};
+      obj[fid_1] = [d_start,d_end];
+      
+      return obj
 
     case 'START_END_FOR_FID':
       return  [(data["marker_map"])]
@@ -106,9 +109,10 @@ export async function exeQuery(query, query_name, func){
   
   console.log("RES: ", res)
 
-  if (func!=null){
-    console.log("HERE")
+  if(func!=null){
     func(res)
   }
+
+  return true
 }
 
