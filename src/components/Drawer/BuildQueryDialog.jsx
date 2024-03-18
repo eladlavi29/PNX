@@ -23,7 +23,7 @@ import MapRoundedIcon from '@mui/icons-material/MapRounded';
 import InputParamDialog from './InputParamDialog';
 
 import Query from '../../Query'
-import {getInputParams, getInputParamsTypes, getFinalQuery, exeQuery} from '../../DjangoCommunication'
+import {getInputParams, getInputParamsTypes, getFinalQuery, exeQuery, getTypeofQuery} from '../../DjangoCommunication'
 
 function PaperComponent(props) {
   return (
@@ -92,14 +92,17 @@ export default function BuildQueryDialog({insertedQueryJson, query, updateQuery,
               console.log(Object.fromEntries(formData.entries()));
               
               const finalQuery = getFinalQuery(Object.fromEntries(formData.entries()))
-              const query_type = (Object.fromEntries(formData.entries())).type
               const query_name = (Object.fromEntries(formData.entries())).query
+              const query_type = getTypeofQuery(query_name)
               
               console.log("QUERY: ", finalQuery);
+              console.log("QUERY TYPE: ", query_type)
+              console.log("query_name: ", query_name)
 
               insertedQueryJson(Object.fromEntries(formData.entries()));
               
               if (query_type=="Heat Map"){
+                console.log("HERE1")
                 exeQuery(finalQuery, query_name, setHeatMapData)
               }
               if (query_type=="Plane"){

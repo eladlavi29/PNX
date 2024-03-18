@@ -10,6 +10,10 @@ const client = new ApolloClient({
 
 import queries_dict from "./queries.json";
 
+export function getTypeofQuery(q_name) {
+  return ((queries_dict['queries'])[q_name])['type'];
+}
+
 export function getQueryTypes() {
   return Object.keys(queries_dict['types']);
 }
@@ -103,6 +107,7 @@ export async function exeQuery(query, query_name, func){
   console.log("RES: ", res)
 
   if (func!=null){
+    console.log("HERE")
     func(res)
   }
 }
