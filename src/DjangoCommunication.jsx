@@ -112,4 +112,3 @@ export async function exeQuery(query, query_name, func){
   }
 }
 
-
