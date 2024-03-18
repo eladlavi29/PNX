@@ -17,6 +17,17 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import Slider from '@mui/material/Slider';
+import MuiInput from '@mui/material/Input';
+import TuneIcon from '@mui/icons-material/Tune';
+
+const Input = styled(MuiInput)`
+  width: 80px;
+`;
+
 const drawerWidth = 240;    
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -28,7 +39,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
-export default function SettingsButton({switch1, setSwitch1}){
+export default function SettingsButton({switch1, setSwitch1, barSpeed, updateBarSpeed}){
     const theme = useTheme();
 
     const [open, setOpen] = React.useState(false);
@@ -40,6 +51,24 @@ export default function SettingsButton({switch1, setSwitch1}){
     const handleDrawerClose = () => {
       setOpen(false);
     };
+
+    const [value, setValue] = React.useState(30);
+
+  const handleSliderChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const handleInputChange = (event) => {
+    setValue(event.target.value === '' ? 0 : Number(event.target.value));
+  };
+
+  const handleBlur = () => {
+    if (value < 0) {
+      setValue(0);
+    } else if (value > 100) {
+      setValue(100);
+    }
+  };
 
     return(
     <div>
@@ -72,8 +101,45 @@ export default function SettingsButton({switch1, setSwitch1}){
                     </IconButton>
                     </DrawerHeader>
                     <Divider />
-                    <FormControlLabel control={<Switch checked={switch1} onChange={setSwitch1} sx = {{left: 10}}/>} label=".    Ulman's Electricity" />
+                    <Box sx={{ width: 250, marginLeft: 1, marginTop:2, height:50}}>
+                    <FormControlLabel control={<Switch checked={switch1} onChange={setSwitch1} sx = {{left: 10}}/>} label="`    Ulman's Electricity" />
+                    </Box>
                     <Divider /> 
+
+
+                    <Box sx={{ width: 250, marginLeft: 1, marginTop:2}}>
+                    <Typography id="input-slider" alignItems="center" gutterBottom>
+                        Slider Speed
+                    </Typography>
+                    <Grid container spacing={2} alignItems="center">
+                        <Grid item>
+                        <TuneIcon />
+                        </Grid>
+                        <Grid item xs>
+                        <Slider
+                            value={typeof value === 'number' ? value : 0}
+                            onChange={handleSliderChange}
+                            aria-labelledby="input-slider"
+                        />
+                        </Grid>
+                        <Grid item>
+                        <Input
+                            value={value}
+                            size="small"
+                            onChange={handleInputChange}
+                            onBlur={handleBlur}
+                            inputProps={{
+                            step: 10,
+                            min: 0,
+                            max: 100,
+                            type: 'number',
+                            'aria-labelledby': 'input-slider',
+                            }}
+                        />
+                        </Grid>
+                    </Grid>
+                    </Box>
+                    <Divider />
                 </Drawer>
             </ListItem>
         </List>

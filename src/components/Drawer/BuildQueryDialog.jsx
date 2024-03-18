@@ -7,28 +7,23 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Paper from '@mui/material/Paper';
 import Draggable from 'react-draggable';
 
-import InputLabel from '@mui/material/InputLabel';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
+
 
 import Box from '@mui/material/Box';
 import FormLabel from '@mui/material/FormLabel';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-
 import BlurLinearRoundedIcon from '@mui/icons-material/BlurLinearRounded';
 import FmdGoodRoundedIcon from '@mui/icons-material/FmdGoodRounded';
 import MapRoundedIcon from '@mui/icons-material/MapRounded';
 
-import {getInputParams, getFinalQuery, exeQuery} from '../../DjangoCommunication'
+import InputParamDialog from './InputParamDialog';
+
+import Query from '../../Query'
+import {getInputParams, getInputParamsTypes, getFinalQuery, exeQuery, getTypeofQuery} from '../../DjangoCommunication'
 
 function PaperComponent(props) {
   return (
@@ -41,38 +36,33 @@ function PaperComponent(props) {
   );
 }
 
-export default function BuildQueryDialog({insertedQueryJson, type, query, updateOpen, setHeatMapData}) {
+export default function BuildQueryDialog({insertedQueryJson, query, updateQuery, insertToHistory, updateOpen, setHeatMapData}) {
   const [open, setOpen] = React.useState(true);
 
-  const inputParams = getInputParams(query);
-  const [inputParamsVals, setInputParamsVals] = React.useState([]);
+  const inputParams = getInputParams(query.query);
+  const inputParamsTypes = getInputParamsTypes(query.query);
 
-  const [region, setRegion] = React.useState("");
+  const updateInputParamsVals = (index, val) => updateQuery({...query,  inputParams: {
+    ...query.inputParams,
+      [index]: (val)
+    },
+  })
 
-  const [dateFrom, setDateFrom] = React.useState();
-  const [timeFrom, setTimeFrom] = React.useState();
-  const [dateTo, setDateTo] = React.useState();
-  const [timeTo, setTimeTo] = React.useState();
+  //const outputParams = ["fid", "Erez's scheducle", "Omer's grades", "Nitzan's Excel"]
 
-  const regions = ["Populars' Apartment", "True Friends' Apartment", "The Edge of Eli's pants"];
-  const outputParams = ["fid", "Erez's scheducle", "Omer's grades", "Nitzan's Excel"]
+  // const [stateCheckbox, setStateCheckbox] = React.useState(
+  //   Array(outputParams.length).fill(false)
+  // );
 
-  const handleRegionChange = (event) => {
-    setRegion(event.target.value);
-  };
-
-  const [stateCheckbox, setStateCheckbox] = React.useState(
-    Array(outputParams.length).fill(false)
-  );
-
-  const handleCheckboxChange = (index) => {
-    setStateCheckbox({
-      ...stateCheckbox,
-      [index]: (!stateCheckbox[index])
-    });
-  };
+  // const handleCheckboxChange = (index) => {
+  //   setStateCheckbox({
+  //     ...stateCheckbox,
+  //     [index]: (!stateCheckbox[index])
+  //   });
+  // };
 
   const handleClose = () => {
+    insertToHistory({ ...query });
     setOpen(false);
     updateOpen();
   };
@@ -81,6 +71,7 @@ export default function BuildQueryDialog({insertedQueryJson, type, query, update
     <React.Fragment>  
     <Dialog
         fullWidth
+        maxWidth='xs'
         open={open}
         onClose={handleClose}
         PaperProps={{
@@ -88,106 +79,70 @@ export default function BuildQueryDialog({insertedQueryJson, type, query, update
             onSubmit: (event) => {
               event.preventDefault();
               const formData = new FormData(event.currentTarget);
-              formData.append("region", region);
-              formData.append("dateFrom", dateFrom);
-              formData.append("dateTo", dateTo);
-              formData.append("timeFrom", timeFrom);
-              formData.append("timeTo", timeTo);
-              formData.append("query", query);
+              // formData.append("region", region);
+              // formData.append("dateFrom", dateFrom);
+              // formData.append("dateTo", dateTo);
+              // formData.append("timeFrom", timeFrom);
+              // formData.append("timeTo", timeTo);
+              formData.append("query", query.query);
               inputParams.map((param, index) => (
-                formData.append(param, inputParamsVals[index])
+                formData.append(param, query.inputParams[index])
               ));
+
+              console.log(Object.fromEntries(formData.entries()));
               
               const finalQuery = getFinalQuery(Object.fromEntries(formData.entries()))
               const query_name = (Object.fromEntries(formData.entries())).query
+              const query_type = getTypeofQuery(query_name)
               
               console.log("QUERY: ", finalQuery);
+              console.log("QUERY TYPE: ", query_type)
+              console.log("query_name: ", query_name)
 
               insertedQueryJson(Object.fromEntries(formData.entries()));
               
-              if (query_name=="RPM_FOR_FID"){
+              if (query_type=="Heat Map"){
+                console.log("HERE1")
                 exeQuery(finalQuery, query_name, setHeatMapData)
               }
-              if (query_name=="Plane_1"){
+              if (query_type=="Plane"){
                 exeQuery(finalQuery, query_name, null)
               }
               
-
               handleClose();
             },
           }}
         PaperComponent={PaperComponent}
       >
-        <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
-        {(() => {
-            switch(type) {
-                case 'Heat Map': return <BlurLinearRoundedIcon />
-                case 'Marker Map': return <FmdGoodRoundedIcon />
-                default: return <MapRoundedIcon />
-            }
-        })()}
-        {query}
+        <DialogTitle 
+        style={{ cursor: 'move' }} id="draggable-dialog-title">
+          <Box
+            display="flex"
+            alignItems="center"
+            gap={1}
+            p={1}>
+          {(() => {
+              switch(query.type) {
+                  case 'Heat Map': return <BlurLinearRoundedIcon />
+                  case 'Marker Map': return <FmdGoodRoundedIcon />
+                  default: return <MapRoundedIcon />
+              }
+          })()}
+          {query.query}
+          </Box>
+          
+
+
         </DialogTitle>
-        
-        <DialogContent >
+
+        <Divider /> 
+
         {inputParams.map((param, index) => (
-            <TextField
-                sx={{   
-                    margin:2
-                }}
-                key= {param}
-                required
-                id={param}
-                name= {param}
-                label= {param}
-                onChange={(event)=>setInputParamsVals({
-                  ...inputParamsVals,
-                  [index]: (event.target.value)
-                })}
-                value= {inputParamsVals[index]}
-                variant="standard"
-            />
+            <InputParamDialog key={index}
+              param={param} type={inputParamsTypes[index]} content={query.inputParams[index]} setContent={updateInputParamsVals} index={index}/>
         ))}
-        </DialogContent>
 
-        <DialogContent>
-            <FormControl sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel htmlFor="demo-dialog-native">Region</InputLabel>
-              <Select
-                autoFocus
-                required
-                native
-                value={region}
-                onChange={handleRegionChange}
-                input={<OutlinedInput label="Region" id="demo-dialog-native" />}
-              >
-                <option aria-label="None" value="" />
-                {regions.map((region) => (
-                    <option value={region} key={region}>{region}</option>
-                ))}
-
-              </Select>
-            </FormControl>
-        </DialogContent>
-
-        {['From', 'To'].map((range) => (
-        <LocalizationProvider dateAdapter={AdapterDayjs} key={range}>
-            <DemoContainer components={['DatePicker', 'TimePicker']}>
-                <DatePicker label={range+" day"}
-                  required
-                  sx={{
-                    left: 10
-                  }}
-                  onChange={(newValue) => range == 'From' ? setDateFrom(newValue) :
-                    setDateTo(newValue)}/>
-            <TimePicker label={range+" time"} 
-                              required
-
-                onChange={(newValue) => range == 'From' ? setTimeFrom(newValue) :
-                    setTimeTo(newValue)}/>
-            </DemoContainer>
-        </LocalizationProvider>))}
-
+{/* 
         <Box sx={{ display: 'flex' }}>
           <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
             <FormLabel component="legend">Choose Output Parameters</FormLabel>
@@ -201,7 +156,7 @@ export default function BuildQueryDialog({insertedQueryJson, type, query, update
               />
               ))}
             </FormControl>
-        </Box>
+        </Box> */}
         
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
