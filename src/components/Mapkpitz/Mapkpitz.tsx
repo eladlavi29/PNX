@@ -123,7 +123,7 @@ const Mapkpitz = ({ mapData, showHeatMap, heatMapData, showMarkerMap, markerMapD
                       key={Math.random() + Math.random()}
                       position={[
                         point.lat * (180 / Math.PI),
-                        point.long * (180 / Math.PI),
+                        point.lon * (180 / Math.PI),
                       ]}
                       icon={markerIcon} // Use the custom icon
                     >
