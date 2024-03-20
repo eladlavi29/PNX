@@ -6,7 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 import DrawerButton from '../components/DrawerButton'
 import DBWindowButton from '../components/DBWindowButton'
 
-export default function MenuAppBar({insertedQueryJson, switch1, updateSwitch1, setDBWindowOpen, DBWindowOpen, setHeatMapData}) {
+export default function MenuAppBar({insertedQueryJson, switch1, updateSwitch1, barSpeed, updateBarSpeed, setDBWindowOpen, DBWindowOpen, setHeatMapData, setShowHeatMap, setFlights}) {
   return (
     <Box sx={{ width: "100vw"}}>
       <AppBar position="static" color="primary">
@@ -25,7 +25,10 @@ export default function MenuAppBar({insertedQueryJson, switch1, updateSwitch1, s
           >
             LionFish
           </Typography> */}
-          <DrawerButton insertedQueryJson={insertedQueryJson} switch1={switch1} setSwitch1={updateSwitch1} setHeatMapData={setHeatMapData}/>
+          <DrawerButton insertedQueryJson={insertedQueryJson} 
+          switch1={switch1} setSwitch1={updateSwitch1} 
+          barSpeed={barSpeed} updateBarSpeed={updateBarSpeed}
+          setHeatMapData={setHeatMapData} setShowHeatMap={setShowHeatMap} setFlights={setFlights} />
 
           <DBWindowButton setWindowOpen={setDBWindowOpen} windowOpen={DBWindowOpen}/>
 

@@ -16,13 +16,15 @@ const client = new ApolloClient({
 
 function App() {
   const [switch1, setSwitch1] = useState(false);
+  const [barSpeed, setBarSpeed] = useState();
   // boolean to open and close the plane data table
   const [DBWindowOpen, setDBWindowOpen] = useState(false);
   const [insertedQueryJson, setInsertedQueryJson] = useState();
   // boolean to determine whether a heatmap should be shown
   const [showHeatMap, setShowHeatMap] = useState(false);
+  
   // list of lists in the format [lat, long, strngth]. this is the data for the heatmap
-  const [heatMapData, setHeatMapData] = useState([[(32 * Math.PI) / 180.0, (34.75 * Math.PI) / 180.0, 10]])
+  const [heatMapData, setHeatMapData] = useState([[(32 * Math.PI) / 180.0, (34.75 * Math.PI) / 180.0, 0]])
   // boolean to determine whether a markermap should be shown
   const [showMarkerMap, setShowMarkerMap] = useState(false);
   // list of lists in the format [lat, long, strngth]. this is the data for the heatmap
@@ -113,7 +115,6 @@ function App() {
   //     ]
   //   ]
   
-  // )
   // list of names of params to display
   const [displayParams, setDisplayParams] = useState(['tele_rpm', 'tele_altitude', 'tele_fuel_kilo', 'packet', 'tele_pp_lat', 'tele_pp_long', 'tele_heading'])
   // mode of the playbar
@@ -130,14 +131,12 @@ function App() {
   //   1: {
   //     "tele_pp_lat": 0.55320939623658449857,
   //     "tele_pp_long": 0.60976575284746381467, 
-  //     "tele_heading": 25,
-  //     "tele_altitude": 5954
+  //     "tele_heading": 25
   //   }, 
   //   2: {
   //     "tele_pp_lat": 0.55120939623658449857,
   //     "tele_pp_long": 0.60876575284746381467,
-  //     "tele_heading": 69,
-  //     "tele_altitude": 5454
+  //     "tele_heading": 69
   //   }
   // });
 
@@ -148,6 +147,10 @@ function App() {
     setSwitch1(event.target.checked);
   }
 
+  const updateBarSpeed = (event) => {
+    setBarSpeed(event.target.checked);
+  }
+
   const memoMap = useMemo(
     () => <Mapkpitz mapData={mapData} showHeatMap={showHeatMap} heatMapData={heatMapData} showMarkerMap={showMarkerMap} markerMapData={markerMapData}/>,
     [showHeatMap, heatMapData, mapData]
@@ -156,7 +159,9 @@ function App() {
   return (
     <>
     <TopBar insertedQueryJson={setInsertedQueryJson} 
-        switch1={switch1} updateSwitch1={updateSwitch1} setDBWindowOpen={setDBWindowOpen} DBWindowOpen={DBWindowOpen} setHeatMapData={setHeatMapData}/>
+        switch1={switch1} updateSwitch1={updateSwitch1}
+        barSpeed={barSpeed} updateBarSpeed={updateBarSpeed}
+        setDBWindowOpen={setDBWindowOpen} DBWindowOpen={DBWindowOpen} setHeatMapData={setHeatMapData} setShowHeatMap={setShowHeatMap} setFlights={setFlights} />
     <ApolloProvider client={client}>
       {memoMap}
       
@@ -176,4 +181,3 @@ function App() {
 }
 
 export default App;
-
