@@ -16,7 +16,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import FastRewindIcon from "@mui/icons-material/FastRewind";
 
-const DateSlider = ({ start, end, value, setValue, mode, setMode, show}) => {
+const DateSlider = ({ start, end, value, setValue, mode, setMode, show, speed, setSpeed}) => {
   //const [start, setStart] = useState(new Date("2023-02-11T11:23:00"));
   //const [end, setEnd] = useState(new Date("2023-02-12T19:43:00"));
   const [min, setMin] = useState(0);

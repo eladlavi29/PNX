@@ -74,11 +74,12 @@ function fix_data_structure(data, query_name){
     case 'Plane_1':
       let dict = (data["get_flights"])[0]
 
-      let d_start = new Date('1970-01-01 00:00:00');
-      d_start.setSeconds(d_start.getSeconds() + Math.floor(dict["start"]/1000));
+      let d_start = new Date(dict['start']);
+      console.log("actual date: ", new Date(dict["start"]))
+      // d_start.setSeconds(d_start.getSeconds() + Math.floor(dict["start"]/1000));
       
-      let d_end = new Date('1970-01-01 00:00:00');
-      d_end.setSeconds(d_end.getSeconds() + Math.floor(dict["end"]/1000));
+      let d_end = new Date(dict['end']);
+      // d_end.setSeconds(d_end.getSeconds() + Math.floor(dict["end"]/1000));
       let fid_1 = dict["fid"]
       var obj = {};
       obj[fid_1] = [d_start,d_end];
