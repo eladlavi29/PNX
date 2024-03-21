@@ -63,6 +63,41 @@ export function getFinalQuery(jsonParams){
   return queryNameToQueryTemplate(jsonParams.query, paramVals);
 }
 
+export function deleteQuery(index, type, setDict, currDict, setData){
+  var copy = {...currDict};
+  delete ((copy[type])[index]) 
+  setDict(copy)
+
+  switch(type){
+    case 'Plane':
+      var res_dict = {}
+      for(var key in copy['Plane'])
+      {
+        var curr_dict = (copy['Plane'])[key]
+        for(var inn_key in curr_dict)
+        {
+          res_dict[inn_key] = curr_dict[inn_key]
+        }
+      }
+      setData(res_dict)
+    
+
+    case 'Marker Map':
+      let res1 = []
+
+      for(var key in copy['Marker Map'])
+      {
+        res1 = res1.concat((copy['Marker Map'])[key])
+      }
+      setData(res1)
+    
+    
+    case 'Heat Map':
+      setData([])
+  }
+}
+
+
 function fix_data_structure(data, query_type, setDict, currDict, query_num, setQuery_num){
   switch(query_type){
     case 'Heat Map':
