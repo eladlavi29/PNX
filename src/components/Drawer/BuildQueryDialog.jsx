@@ -36,7 +36,7 @@ function PaperComponent(props) {
   );
 }
 
-export default function BuildQueryDialog({insertedQueryJson, query, updateQuery, insertToHistory, updateOpen, setHeatMapData, setShowHeatMap, setFlights,setMarkerMapData, setShowMarkerMap}) {
+export default function BuildQueryDialog({insertedQueryJson, query, updateQuery, insertToHistory, calledFromHistory, updateOpen, setHeatMapData, setShowHeatMap, setFlights,setMarkerMapData, setShowMarkerMap}) {
   const [open, setOpen] = React.useState(true);
 
   const inputParams = getInputParams(query.query);
@@ -62,7 +62,6 @@ export default function BuildQueryDialog({insertedQueryJson, query, updateQuery,
   // };
 
   const handleClose = () => {
-    insertToHistory({ ...query });
     setOpen(false);
     updateOpen();
   };
@@ -77,6 +76,9 @@ export default function BuildQueryDialog({insertedQueryJson, query, updateQuery,
         PaperProps={{
             component: 'form',
             onSubmit: (event) => {
+              if(!calledFromHistory)
+                insertToHistory({ ...query });
+              
               event.preventDefault();
               const formData = new FormData(event.currentTarget);
               // formData.append("region", region);

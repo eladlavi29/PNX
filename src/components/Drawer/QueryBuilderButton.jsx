@@ -3,7 +3,8 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ManageSearchRoundedIcon from '@mui/icons-material/ManageSearchRounded';
+import CloseIcon from '@mui/icons-material/Close';
+import EditIcon from '@mui/icons-material/Edit';import ManageSearchRoundedIcon from '@mui/icons-material/ManageSearchRounded';
 import BlurLinearRoundedIcon from '@mui/icons-material/BlurLinearRounded';
 import FmdGoodRoundedIcon from '@mui/icons-material/FmdGoodRounded';
 import MapRoundedIcon from '@mui/icons-material/MapRounded';
@@ -25,6 +26,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 import {getQueriesOfType, getQueryTypes} from '../../DjangoCommunication';
 import Query from '../../Query'
+import { ButtonGroup } from '@mui/material';
+import { Edit } from '@mui/icons-material';
 
 const drawerWidth = 320;    
 
@@ -58,9 +61,19 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
       setOpen(false);
     };
 
+    const convertToOptionName = (query) => {
+      switch(query.type) {
+        case 'Heat Map': return "⛆ "+ query.query
+        //📍
+        case 'Marker Map': return "🖈 " + query.query
+        default: return "✈ " + query.query
+      }
+    }
+
+    const [calledFromHistory, setCalledFromHistory] = React.useState(false);
+
     const handleQueryBuilderOpen = () => {
       if((inputQuery.query != '')){
-        //insertToHistory({ ...inputQuery });
         setOpenDialog(true);
         setOpen(false);
       }
@@ -74,6 +87,10 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
 
     const insertToHistory = (query) => {
       setHistory([].concat(query, history));
+    }
+
+    const removeFromHistory = (query) => {
+      setHistory(history.filter(item => item !== query));
     }
 
   return (
@@ -112,7 +129,7 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
                       disablePortal
                       id="combo-box-demo"
                       options={possibleQueries.map((query) => (
-                          query.query
+                        convertToOptionName(query)
                       ))}
                       sx={{ width: 300 , m:1}}
                       renderInput={(params) => 
@@ -120,24 +137,23 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
                       }
 
                       onChange={(event, newQuery) => {
+                        console.log(newQuery.slice(2));
                         setInputQuery(
-                          possibleQueries.filter((query)=>query.query == newQuery)[0]
+                          possibleQueries.filter((query)=>query.query == newQuery.slice(2))[0]
                         );
                       }}
                     />
 
-                    <Button variant="text" onClick={handleQueryBuilderOpen}>Enter</Button>    
+                    <Button variant="text" 
+                    onClick={() => {setCalledFromHistory(false); handleQueryBuilderOpen();}}>
+                    Enter</Button>    
                     <Divider />
 
                     <List>
                       {history.map((query, index) => (
                           <ListItem key={index} disablePadding>
-                          <ListItemButton 
-                            onClick={() => 
-                              {setInputQuery(query); 
-                                setOpenDialog(true);
-                                setOpen(false);}}>
-                          <ListItemIcon>
+                            
+                          <ListItemIcon sx={{marginLeft: 2}}>
                           {(() => {
                               switch(query.type) {
                                   case 'Heat Map': return <BlurLinearRoundedIcon />
@@ -147,7 +163,16 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
                           })()}
                           </ListItemIcon>
                           <ListItemText primary={query.query} />
-                          </ListItemButton>
+                          <IconButton onClick={() => 
+                            { setCalledFromHistory(true);
+                              setInputQuery(query); 
+                              setOpenDialog(true);
+                              setOpen(false);}}>
+                          <EditIcon fontSize='small'/>
+                          </IconButton>
+                          <IconButton>
+                          <CloseIcon fontSize='small' onClick={() => removeFromHistory(query)}/>
+                          </IconButton>
                         </ListItem>
                       ))}                    
                     </List>
@@ -156,8 +181,9 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
         </List>
         <Divider />
         {(openDialog) && (inputQuery.query != '') &&
-          <BuildQueryDialog insertedQueryJson={insertedQueryJson} key={inputQuery.query} query={inputQuery} updateQuery={setInputQuery} insertToHistory={insertToHistory} setHeatMapData={setHeatMapData}
-              updateOpen={closeChildDialog} setShowHeatMap={setShowHeatMap} setFlights={setFlights} setMarkerMapData={setMarkerMapData} setShowMarkerMap={setShowMarkerMap}/>}
+          <BuildQueryDialog insertedQueryJson={insertedQueryJson} key={inputQuery.query} query={inputQuery} updateQuery={setInputQuery} 
+          insertToHistory={insertToHistory} calledFromHistory={calledFromHistory}
+          setHeatMapData={setHeatMapData} updateOpen={closeChildDialog} setShowHeatMap={setShowHeatMap} setFlights={setFlights} setMarkerMapData={setMarkerMapData} setShowMarkerMap={setShowMarkerMap}/>}
     </div>
   );
 }
