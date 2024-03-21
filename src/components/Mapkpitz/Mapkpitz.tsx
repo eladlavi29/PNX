@@ -28,20 +28,23 @@ function KeepLocation({ zoomRef, centerRef }) {
   });
 }
 
-const Mapkpitz = ({ mapData, showHeatMap, heatMapData }) => {
+const Mapkpitz = ({ mapData, showHeatMap, heatMapData, showMarkerMap, markerMapData}) => {
   const [rotationAngle, setRotationAngle] = useState(0);
   const [lat, setLat] = useState(31.58304248898149);
   const [long, setLong] = useState(34.87970835035038);
   const zoomRef = useRef(7);
   const centerRef = useRef([31.5, 34.75]);
-  // const { error, loading, data } = useQuery(gql``);
-  const handleRotate = () => {
-    setRotationAngle((prev) => prev + 21);
-  };
+  
 
   // Modify the icon size to make it bigger
-  const customIcon = new L.Icon({
+  const uavIcon = new L.Icon({
     iconUrl: "/uav.png", // assuming Plane is the path to your icon image
+    iconSize: [60, 60], // adjust the size as needed
+    iconAnchor: [30, 30], // center the icon on the marker's position
+  });
+
+  const markerIcon = new L.Icon({
+    iconUrl: "/location_pin.png", // assuming Plane is the path to your icon image
     iconSize: [60, 60], // adjust the size as needed
     iconAnchor: [30, 30], // center the icon on the marker's position
   });
@@ -87,7 +90,7 @@ const Mapkpitz = ({ mapData, showHeatMap, heatMapData }) => {
               mapData[key].tele_pp_lat * (180 / Math.PI),
               mapData[key].tele_pp_long * (180 / Math.PI),
             ]}
-            icon={customIcon} // Use the custom icon
+            icon={uavIcon} // Use the custom icon
             rotationAngle={mapData[key].tele_heading}
             rotationOrigin="center"
           >
@@ -101,10 +104,37 @@ const Mapkpitz = ({ mapData, showHeatMap, heatMapData }) => {
             points={heatMapData}
             longitudeExtractor={(point) => (point[1] * 180.0) / Math.PI}
             latitudeExtractor={(point) => (point[0] * 180.0) / Math.PI}
-            key={Math.random() + Math.random()}
+            key={Math.random() + Math.random()}//nizan: why is this needed?
             intensityExtractor={(point) => point[2]}
             {...heatmapOptions}
           />
+        )}
+        {showMarkerMap && (
+            markerMapData.map((type, idx) => {
+              const markerIcon = new L.Icon({
+                iconUrl: `/location_pins/location-pin(${(idx*4) % 17}).png`, // assuming Plane is the path to your icon image
+                iconSize: [60, 60], // adjust the size as needed
+                iconAnchor: [30, 30], // center the icon on the marker's position
+              });
+              return (
+                type.map((point) => {
+                  return (
+                    <Marker
+                      key={Math.random() + Math.random()}
+                      position={[
+                        point.lat * (180 / Math.PI),
+                        point.lon * (180 / Math.PI),
+                      ]}
+                      icon={markerIcon} // Use the custom icon
+                    >
+                      <Popup>
+                        {point.content}
+                      </Popup>
+                    </Marker>
+                  );
+                })
+            );
+          })
         )}
       </MapContainer>
     </>

@@ -45,7 +45,7 @@ def create_json_queries():
     }'''}
     dict_queries['START_END_FOR_FID'] = {'type':'Marker Map', 'params':['fid'], 'params_types':['Number'], 'template': '''query{
         marker_map(query: "(select fast_params.tele_pp_lat as lat,fast_params.tele_pp_long as lon,'start' as content from fast_params,flight_to_fid where fast_params.fid=$fid$ and flight_to_fid.fid=$fid$ and fast_params.tele_pp_lat!=0 and fast_params.tele_pp_long!=0 order by packet asc limit 1) UNION ALL (select fast_params.tele_pp_lat as lat,fast_params.tele_pp_long as lon,'end' as content from fast_params,flight_to_fid where fast_params.fid=$fid$ and flight_to_fid.fid=$fid$ and fast_params.tele_pp_lat!=0 and fast_params.tele_pp_long!=0 order by packet desc limit 1)") {
-        lat lon content
+        lat lon content}
         }'''}
 
     dict_queries['STAM'] = {'type':'Marker Map', 'params':['fid', 'number', 'string', 'region', 'dateFrom', 'dateTo', 'timeFrom', 'timeTo'], 'params_types':['Number', 'Number', 'String', 'Region', 'Date', 'Date', 'Time', 'Time'], 'template': '''query{
