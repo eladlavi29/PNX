@@ -14,6 +14,7 @@ import QueryBuilderButton from "./Drawer/QueryBuilderButton";
 import HistoryButton from "./Drawer/HistoryButton";
 import SettingsButton from "./Drawer/SettingsButton";
 import HelpButton from "./Drawer/HelpButton";
+import Parameters from './Drawer/Parameters';
 
 const drawerWidth = 240;    
 
@@ -26,7 +27,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
-export default function DrawerButton({insertedQueryJson, switch1, setSwitch1, barSpeed, updateBarSpeed, setHeatMapData, setShowHeatMap, setFlights,setMarkerMapData, setShowMarkerMap}) {
+export default function DrawerButton({insertedQueryJson, switch1, setSwitch1, barSpeed, updateBarSpeed, setHeatMapData, setShowHeatMap, setFlights,setMarkerMapData, setShowMarkerMap, allParams, params, setParams}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -67,7 +68,7 @@ export default function DrawerButton({insertedQueryJson, switch1, setSwitch1, ba
         </DrawerHeader>
         <Divider />
         <List>
-        {['Build Query', 'History', 'Settings', 'Help'].map((text) => (
+        {['Build Query', 'Parameters', 'Settings'].map((text) => (
             <div key= {text}>
             {(() => {
                 switch(text) {
@@ -77,6 +78,7 @@ export default function DrawerButton({insertedQueryJson, switch1, setSwitch1, ba
                     switch1={switch1} setSwitch1={setSwitch1} 
                     barSpeed={barSpeed} updateBarSpeed={updateBarSpeed}
                     />
+                    case 'Parameters': return <Parameters allParams={allParams} params={params} setParams={setParams}/>
                     case 'Help': return <HelpButton />
                     default: return null
                 }

@@ -21,8 +21,20 @@ export function CalculateDateRange(flights, setDateRange) {
 }
 
 export async function CalculateFlights(flights, position, mode, setMapData, client, params, dateRange) {
+    let mod_params = [...params]
+    if (mod_params.indexOf('tele_pp_long') == -1) {
+        mod_params = [...mod_params, 'tele_pp_long']
+    }
+    if (mod_params.indexOf('tele_pp_lat') == -1) {
+        mod_params = [...mod_params, 'tele_pp_lat']
+    }
+    if (mod_params.indexOf('tele_heading') == -1) {
+        mod_params = [...mod_params, 'tele_heading']
+    }
+    
     switch (mode) {
         case 'REL': {
+            console.log(flights)
             let totalData = {}
             for (let fid in flights) {
                 let start = flights[fid][0].getTime()
@@ -33,7 +45,7 @@ export async function CalculateFlights(flights, position, mode, setMapData, clie
                         query: gql`
                             query{
                                 row_by_time(fid: ${fid}, time: "${format(time, 'yyyy-MM-dd HH:mm:ss')}") {
-                                    params(names: [${params.map(param => {return '"' + param + '"'})}]) {
+                                    params(names: [${mod_params.map(param => {return '"' + param + '"'})}]) {
                                         name
                                         value
                                     }
@@ -63,7 +75,7 @@ export async function CalculateFlights(flights, position, mode, setMapData, clie
                         query: gql`
                             query{
                                 row_by_time(fid: ${fid}, time: "${format(time, 'yyyy-MM-dd HH:mm:ss')}") {
-                                    params(names: [${params.map(param => {return '"' + param + '"'})}]) {
+                                    params(names: [${mod_params.map(param => {return '"' + param + '"'})}]) {
                                         name
                                         value
                                     }
