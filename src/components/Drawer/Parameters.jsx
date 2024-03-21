@@ -76,7 +76,7 @@ export default function Parameters({allParams, params, setParams}){
                                 let newParams = params.slice()
                                 newParams.splice(newParams.indexOf(param), 1)
                                 setParams(newParams)
-                            }}
+                            }}  
                             >
                             
                             <ListItemText primary={param} />

@@ -52,7 +52,7 @@ export default function SettingsButton({switch1, setSwitch1, barSpeed, updateBar
       setOpen(false);
     };
 
-    const [value, setValue] = React.useState(30);
+    const [value, setValue] = React.useState(5);
 
   const handleSliderChange = (event, newValue) => {
     setValue(newValue);
@@ -117,6 +117,9 @@ export default function SettingsButton({switch1, setSwitch1, barSpeed, updateBar
                         </Grid>
                         <Grid item xs>
                         <Slider
+                            step={1}
+                            min={1}
+                            max={10}
                             value={typeof value === 'number' ? value : 0}
                             onChange={handleSliderChange}
                             aria-labelledby="input-slider"
