@@ -36,7 +36,7 @@ function PaperComponent(props) {
   );
 }
 
-export default function BuildQueryDialog({insertedQueryJson, query, updateQuery, insertToHistory, updateOpen, setHeatMapData, setShowHeatMap, setFlights,setMarkerMapData, setShowMarkerMap}) {
+export default function BuildQueryDialog({insertedQueryJson, query, updateQuery, insertToHistory, updateOpen, setHeatMapData, setShowHeatMap, setFlights,setMarkerMapData, query_num, setQuery_num,  setQueriesDict, QueriesDict, setShowMarkerMap}) {
   const [open, setOpen] = React.useState(true);
 
   const inputParams = getInputParams(query.query);
@@ -102,15 +102,15 @@ export default function BuildQueryDialog({insertedQueryJson, query, updateQuery,
               insertedQueryJson(Object.fromEntries(formData.entries()));
               
               if (query_type=="Heat Map"){
-                let res = exeQuery(finalQuery, query_name, setHeatMapData)
+                let res = exeQuery(finalQuery, query_type, setHeatMapData, setQueriesDict, QueriesDict, query_num, setQuery_num)
                 console.log("res: ", res)
                 setShowHeatMap(res)
               }
               if (query_type=="Plane"){
-                exeQuery(finalQuery, query_name, setFlights)
+                exeQuery(finalQuery, query_type, setFlights, setQueriesDict, QueriesDict, query_num, setQuery_num)
               }
               if (query_type=="Marker Map"){
-                let res = exeQuery(finalQuery, query_name, setMarkerMapData)
+                let res = exeQuery(finalQuery, query_type, setMarkerMapData, setQueriesDict, QueriesDict, query_num, setQuery_num)
                 console.log("res: ", res)
                 setShowMarkerMap(res)        
               }

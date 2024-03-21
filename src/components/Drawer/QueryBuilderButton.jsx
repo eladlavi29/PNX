@@ -37,7 +37,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
-export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, setShowHeatMap, setFlights,setMarkerMapData, setShowMarkerMap}) {
+export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, setShowHeatMap, setFlights,setMarkerMapData, query_num, setQuery_num, setQueriesDict, QueriesDict, setShowMarkerMap}) {
   const possibleQueries = [].concat.apply([], 
     getQueryTypes().map((type) => 
     getQueriesOfType(type).map((query) => 
@@ -157,7 +157,7 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
         <Divider />
         {(openDialog) && (inputQuery.query != '') &&
           <BuildQueryDialog insertedQueryJson={insertedQueryJson} key={inputQuery.query} query={inputQuery} updateQuery={setInputQuery} insertToHistory={insertToHistory} setHeatMapData={setHeatMapData}
-              updateOpen={closeChildDialog} setShowHeatMap={setShowHeatMap} setFlights={setFlights} setMarkerMapData={setMarkerMapData} setShowMarkerMap={setShowMarkerMap}/>}
+              updateOpen={closeChildDialog} setShowHeatMap={setShowHeatMap} setFlights={setFlights} setMarkerMapData={setMarkerMapData} query_num={query_num} setQuery_num={setQuery_num} setQueriesDict={setQueriesDict} QueriesDict={QueriesDict} setShowMarkerMap={setShowMarkerMap}/>}
     </div>
   );
 }
