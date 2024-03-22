@@ -99,6 +99,7 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
     }
 
     const removeFromHistory = (query) => {
+      setDataFunc = NaN;
       switch(query.type) {
         case 'Heat Map': setDataFunc = setHeatMapData
         case 'Marker Map': setDataFunc = setMarkerMapData
