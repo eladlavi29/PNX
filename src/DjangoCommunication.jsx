@@ -65,8 +65,15 @@ export function getFinalQuery(jsonParams){
 
 
 export function deleteQuery(index, type, setDict, currDict, setData){
+  console.log("deleteQuery")
+  console.log("currDict: ", currDict)
+  console.log("index: ", index)
+
   var copy = {...currDict};
   delete ((copy[type])[index]) 
+
+  console.log("copy: ", copy)
+
   setDict(copy)
 
   switch(type){
@@ -81,20 +88,26 @@ export function deleteQuery(index, type, setDict, currDict, setData){
         }
       }
       setData(res_dict)
+      return true
     
 
     case 'Marker Map':
+      console.log("deleteQuery- MARKER MAP")
       let res1 = []
 
       for(var key in copy['Marker Map'])
       {
         res1 = res1.concat((copy['Marker Map'])[key])
       }
+      console.log("res1: ", res1)
       setData(res1)
+      console.log("res1: ", res1)
+      return true
     
     
     case 'Heat Map':
       setData([])
+      return true
   }
 }
 

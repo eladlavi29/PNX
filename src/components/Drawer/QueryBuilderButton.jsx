@@ -24,7 +24,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-import {getQueriesOfType, getQueryTypes} from '../../DjangoCommunication';
+import {getQueriesOfType, getQueryTypes, deleteQuery} from '../../DjangoCommunication';
 import Query from '../../Query'
 import { ButtonGroup } from '@mui/material';
 import { Edit } from '@mui/icons-material';
@@ -51,6 +51,8 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
 
     const theme = useTheme();
     
+    const [historyIndex, setHistoryIndex] = React.useState(0);
+
     const [inputQuery, setInputQuery] = React.useState(new Query('', ''));
 
     const [open, setOpen] = React.useState(false);
@@ -92,12 +94,33 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
     const insertToHistory = (query) => {
       query.index = historyIndex;
       setHistoryIndex(historyIndex + 1); 
-      addHistoryType(query.type);
+      //addHistoryType(query.type);
+
+      if(query.type == "Heat Map"){
+        setHistory([].concat(query, history.filter(item => item.type != 'Heat Map')));
+        return;
+      }
+
       setHistory([].concat(query, history));
     }
 
     const removeFromHistory = (query) => {
-      removeFromHistoryInApp(query.index);
+      switch(query.type) {
+        case 'Heat Map': 
+          let res = deleteQuery(query.index, query.type, setQueriesDict, QueriesDict, setHeatMapData);
+          setShowHeatMap(res)
+
+        case 'Marker Map': 
+          console.log("HERE-Marker Map, query.index: ", query.index)
+          let res1 = deleteQuery(query.index, query.type, setQueriesDict, QueriesDict, setMarkerMapData);
+          setShowMarkerMap(res1)
+
+        case 'Plane':
+          if (query.type=='Plane'){
+            deleteQuery(query.index, query.type, setQueriesDict, QueriesDict, setFlights);
+          }
+
+      }
       setHistory(history.filter(item => item !== query));
     }
 
