@@ -95,6 +95,12 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
       query.index = historyIndex;
       setHistoryIndex(historyIndex + 1); 
       //addHistoryType(query.type);
+
+      if(query.type == "Heat Map"){
+        setHistory([].concat(query, history.filter(item => item.type != 'Heat Map')));
+        return;
+      }
+
       setHistory([].concat(query, history));
     }
 
