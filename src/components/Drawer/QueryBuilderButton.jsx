@@ -24,7 +24,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-import {getQueriesOfType, getQueryTypes} from '../../DjangoCommunication';
+import {getQueriesOfType, getQueryTypes, deleteQuery} from '../../DjangoCommunication';
 import Query from '../../Query'
 import { ButtonGroup } from '@mui/material';
 import { Edit } from '@mui/icons-material';
@@ -51,6 +51,8 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
 
     const theme = useTheme();
     
+    const [historyIndex, setHistoryIndex] = React.useState(0);
+
     const [inputQuery, setInputQuery] = React.useState(new Query('', ''));
 
     const [open, setOpen] = React.useState(false);
@@ -92,12 +94,17 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
     const insertToHistory = (query) => {
       query.index = historyIndex;
       setHistoryIndex(historyIndex + 1); 
-      addHistoryType(query.type);
+      //addHistoryType(query.type);
       setHistory([].concat(query, history));
     }
 
     const removeFromHistory = (query) => {
-      removeFromHistoryInApp(query.index);
+      switch(query.type) {
+        case 'Heat Map': setDataFunc = setHeatMapData
+        case 'Marker Map': setDataFunc = setMarkerMapData
+        default: setDataFunc = setFlights
+      }
+      deleteQuery(query.index, query.type, setQueriesDict, QueriesDict, setDataFunc);
       setHistory(history.filter(item => item !== query));
     }
 
