@@ -36,18 +36,20 @@ function PaperComponent(props) {
   );
 }
 
-export default function BuildQueryDialog({insertedQueryJson, query, updateQuery, insertToHistory, 
+export default function BuildQueryDialog({insertedQueryJson, query, updateQuery, insertToHistory, instertAndRemoveFromHistory,
   calledFromHistory, updateOpen, setHeatMapData, setShowHeatMap, setFlights,
   setMarkerMapData, query_num, setQuery_num,  setQueriesDict, QueriesDict, setShowMarkerMap
   }) {
   const [open, setOpen] = React.useState(true);
 
-  const inputParams = getInputParams(query.query);
-  const inputParamsTypes = getInputParamsTypes(query.query);
+  const [newQuery, setNewQuery] = React.useState({...query});
 
-  const updateInputParamsVals = (index, val) => updateQuery({...query,  
+  const inputParams = getInputParams(newQuery.query);
+  const inputParamsTypes = getInputParamsTypes(newQuery.query);
+
+  const updateInputParamsVals = (index, val) => setNewQuery({...newQuery,  
     inputParams: {
-    ...query.inputParams,
+    ...newQuery.inputParams,
       [index]: (val)
     },
   })
@@ -80,9 +82,11 @@ export default function BuildQueryDialog({insertedQueryJson, query, updateQuery,
         PaperProps={{
             component: 'form',
             onSubmit: (event) => {
-              if(!calledFromHistory)
-                insertToHistory({ ...query });
-
+              if(calledFromHistory)
+                instertAndRemoveFromHistory({ ...query},  {...newQuery })
+              else              
+                insertToHistory({ ...newQuery }); 
+              
               event.preventDefault();
               const formData = new FormData(event.currentTarget);
               // formData.append("region", region);
@@ -90,9 +94,9 @@ export default function BuildQueryDialog({insertedQueryJson, query, updateQuery,
               // formData.append("dateTo", dateTo);
               // formData.append("timeFrom", timeFrom);
               // formData.append("timeTo", timeTo);
-              formData.append("query", query.query);
+              formData.append("query", newQuery.query);
               inputParams.map((param, index) => (
-                formData.append(param, query.inputParams[index])
+                formData.append(param, newQuery.inputParams[index])
               ));
 
               console.log(Object.fromEntries(formData.entries()));
@@ -134,13 +138,13 @@ export default function BuildQueryDialog({insertedQueryJson, query, updateQuery,
             gap={1}
             p={1}>
           {(() => {
-              switch(query.type) {
+              switch(newQuery.type) {
                   case 'Heat Map': return <BlurLinearRoundedIcon />
                   case 'Marker Map': return <FmdGoodRoundedIcon />
                   default: return <MapRoundedIcon />
               }
           })()}
-          {query.query}
+          {newQuery.query}
           </Box>
           
 
@@ -151,7 +155,7 @@ export default function BuildQueryDialog({insertedQueryJson, query, updateQuery,
 
         {inputParams.map((param, index) => (
             <InputParamDialog key={index}
-              param={param} type={inputParamsTypes[index]} content={query.inputParams[index]} setContent={updateInputParamsVals} index={index}/>
+              param={param} type={inputParamsTypes[index]} content={newQuery.inputParams[index]} setContent={updateInputParamsVals} index={index}/>
         ))}
 
 {/* 

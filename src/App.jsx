@@ -21,7 +21,7 @@ function App() {
   const [DBWindowOpen, setDBWindowOpen] = useState(false);
   const [insertedQueryJson, setInsertedQueryJson] = useState();
   // boolean to determine whether a heatmap should be shown
-  const [showHeatMap, setShowHeatMap] = useState(false);
+  const [showHeatMap, setShowHeatMap] = useState(true);
   
   // list of lists in the format [lat, long, strngth]. this is the data for the heatmap
   const [heatMapData, setHeatMapData] = useState([[(32 * Math.PI) / 180.0, (34.75 * Math.PI) / 180.0, 0]])
