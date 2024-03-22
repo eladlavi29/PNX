@@ -181,7 +181,8 @@ function App() {
         switch1={switch1} updateSwitch1={updateSwitch1}
         barSpeed={barSpeed} updateBarSpeed={updateBarSpeed}
         historyIndex={historyIndex} setHistoryIndex={setHistoryIndex} addHistoryType={addHistoryType} removeFromHistory={removeFromHistory}
-        setDBWindowOpen={setDBWindowOpen} DBWindowOpen={DBWindowOpen} setHeatMapData={setHeatMapData} setShowHeatMap={setShowHeatMap} setFlights={setFlights} setMarkerMapData={setMarkerMapData} setShowMarkerMap={setShowMarkerMap} allParams={allParams} params={displayParams} setParams={setDisplayParams}/>
+        setDBWindowOpen={setDBWindowOpen} DBWindowOpen={DBWindowOpen} setHeatMapData={setHeatMapData} setShowHeatMap={setShowHeatMap} setFlights={setFlights} setMarkerMapData={setMarkerMapData} setShowMarkerMap={setShowMarkerMap} allParams={allParams} params={displayParams} setParams={setDisplayParams}
+        QueriesDict={queriesDict} setQueriesDict={setQueriesDict} query_num={query_num} setQuery_num={setQuery_num} />
     <ApolloProvider client={client}>
       {memoMap}
       

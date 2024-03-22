@@ -63,6 +63,7 @@ export function getFinalQuery(jsonParams){
   return queryNameToQueryTemplate(jsonParams.query, paramVals);
 }
 
+
 export function deleteQuery(index, type, setDict, currDict, setData){
   var copy = {...currDict};
   delete ((copy[type])[index]) 
