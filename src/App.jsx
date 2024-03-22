@@ -30,7 +30,7 @@ function App() {
   // list of all possible params, in the future will come from GQL
   const allParams = ['time', 'tele_pp_lat', 'tele_pp_long', 'tele_altitude', 'tele_fuel_kilo', 'ecu_fuel_press', 'tele_fuel_cnspt', 'eng_throt_cmd', 'tele_rpm', 'air_temp', 'tele_eng_air_temp', 'ecu_air_temp_0', 'ecu_water_temp_0', 'ecu_air_temp_1', 'ecu_water_temp_1', 'eng_ref_temp_filter', 'tele_ap_pitch', 'tele_heading', 'tele_ap_roll', 'cas_knots', 'lights_stat', 'tele_roc']
   // list of lists in the format [lat, long, strngth]. this is the data for the heatmap
-  const [queriesDict, setQueriesDict] = useState({"Plane":{}, "Heat Map":{}, "Marker Map":{}})
+  const [queriesDict, setQueriesDict] = useState({"Marker Map":{}, "Heat Map":{}, "Plane":{"unique":({1: [new Date("2024-01-14T23:40:06"), new Date("2024-01-15T00:40:01")], 2: [new Date("2024-01-17T09:07:51"), new Date("2024-01-17T09:25:44")]})   }})
   const [markerMapData, setMarkerMapData] = useState([])
   const [query_num, setQuery_num] = useState(0)
   
