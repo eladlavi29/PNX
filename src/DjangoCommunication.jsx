@@ -88,6 +88,7 @@ export function deleteQuery(index, type, setDict, currDict, setData){
         }
       }
       setData(res_dict)
+      return true
     
 
     case 'Marker Map':
@@ -101,10 +102,12 @@ export function deleteQuery(index, type, setDict, currDict, setData){
       console.log("res1: ", res1)
       setData(res1)
       console.log("res1: ", res1)
+      return true
     
     
     case 'Heat Map':
       setData([])
+      return true
   }
 }
 

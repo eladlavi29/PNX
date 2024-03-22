@@ -101,11 +101,13 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
     const removeFromHistory = (query) => {
       switch(query.type) {
         case 'Heat Map': 
-          deleteQuery(query.index, query.type, setQueriesDict, QueriesDict, setHeatMapData);
+          let res = deleteQuery(query.index, query.type, setQueriesDict, QueriesDict, setHeatMapData);
+          setShowHeatMap(res)
 
         case 'Marker Map': 
           console.log("HERE-Marker Map, query.index: ", query.index)
-          deleteQuery(query.index, query.type, setQueriesDict, QueriesDict, setMarkerMapData);
+          let res1 = deleteQuery(query.index, query.type, setQueriesDict, QueriesDict, setMarkerMapData);
+          setShowMarkerMap(res1)
 
         case 'Plane':
           if (query.type=='Plane'){
