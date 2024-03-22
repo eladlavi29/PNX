@@ -29,7 +29,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function DrawerButton({insertedQueryJson, switch1, setSwitch1, barSpeed, 
   updateBarSpeed, setHeatMapData, setShowHeatMap, setFlights, 
-  setMarkerMapData, setShowMarkerMap, allParams, params, setParams,
+  setMarkerMapData,  query_num, setQuery_num, setQueriesDict, QueriesDict, setShowMarkerMap, allParams, params, setParams,
   historyIndex, setHistoryIndex, addHistoryType, removeFromHistory
   }) {
   const theme = useTheme();
@@ -79,7 +79,7 @@ export default function DrawerButton({insertedQueryJson, switch1, setSwitch1, ba
                     case 'Build Query': return <QueryBuilderButton 
                       insertedQueryJson={insertedQueryJson} setHeatMapData={setHeatMapData} 
                       setShowHeatMap={setShowHeatMap} setFlights={setFlights} 
-                      setMarkerMapData={setMarkerMapData} setShowMarkerMap={setShowMarkerMap}
+                      setMarkerMapData={setMarkerMapData}  query_num={query_num} setQuery_num={setQuery_num} setQueriesDict={setQueriesDict} QueriesDict={QueriesDict} setShowMarkerMap={setShowMarkerMap}
                       historyIndex={historyIndex} setHistoryIndex={setHistoryIndex} addHistoryType={addHistoryType} removeFromHistoryInApp={removeFromHistory}/>
                       
                     case 'History': return <HistoryButton />

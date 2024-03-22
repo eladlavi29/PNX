@@ -63,15 +63,50 @@ export function getFinalQuery(jsonParams){
   return queryNameToQueryTemplate(jsonParams.query, paramVals);
 }
 
-function fix_data_structure(data, query_name){
-  switch(query_name){
-    case 'RPM_FOR_FID':
+export function deleteQuery(index, type, setDict, currDict, setData){
+  var copy = {...currDict};
+  delete ((copy[type])[index]) 
+  setDict(copy)
+
+  switch(type){
+    case 'Plane':
+      var res_dict = {}
+      for(var key in copy['Plane'])
+      {
+        var curr_dict = (copy['Plane'])[key]
+        for(var inn_key in curr_dict)
+        {
+          res_dict[inn_key] = curr_dict[inn_key]
+        }
+      }
+      setData(res_dict)
+    
+
+    case 'Marker Map':
+      let res1 = []
+
+      for(var key in copy['Marker Map'])
+      {
+        res1 = res1.concat((copy['Marker Map'])[key])
+      }
+      setData(res1)
+    
+    
+    case 'Heat Map':
+      setData([])
+  }
+}
+
+
+function fix_data_structure(data, query_type, setDict, currDict, query_num, setQuery_num){
+  switch(query_type){
+    case 'Heat Map':
       let res =  (data["heat_map"]).map((dict) => (
         ([dict["lat"],dict["lon"],dict["strength"]])
       ));
       return res;
 
-    case 'Plane_1':
+    case 'Plane':
       let dict = (data["get_flights"])[0]
 
       let d_start = new Date(dict['start']);
@@ -81,13 +116,58 @@ function fix_data_structure(data, query_name){
       let d_end = new Date(dict['end']);
       // d_end.setSeconds(d_end.getSeconds() + Math.floor(dict["end"]/1000));
       let fid_1 = dict["fid"]
-      var obj = {};
-      obj[fid_1] = [d_start,d_end];
       
-      return obj
+      var obj={}
+      obj[fid_1] = [d_start,d_end];
 
-    case 'START_END_FOR_FID':
-      return  [(data["marker_map"])]
+      var tag = query_num
+      setQuery_num(query_num+1)
+
+      console.log("tag: ", tag)
+
+      var copy = {...currDict};
+      (copy['Plane'])[tag] = obj // a dict that represents the query
+      setDict(copy)
+
+      console.log("copy: ", copy)
+
+      var res_dict = {}
+      for(var key in copy['Plane'])
+      {
+        var curr_dict = (copy['Plane'])[key]
+        for(var inn_key in curr_dict)
+        {
+          res_dict[inn_key] = curr_dict[inn_key]
+        }
+      }
+
+      console.log("res_dict: ", res_dict)
+
+      return res_dict
+
+    case 'Marker Map':
+      var curr_list = [(data["marker_map"])]
+      var tag = query_num
+      setQuery_num(query_num+1)
+
+      console.log("tag: ", tag)
+
+      var copy = {...currDict};
+      (copy['Marker Map'])[tag] = curr_list
+      setDict(copy)
+
+      console.log("copy: ", copy)
+
+      let res1 = []
+
+      for(var key in copy['Marker Map'])
+      {
+        res1 = res1.concat((copy['Marker Map'])[key])
+      }
+
+      console.log("res1: ", res1)
+
+      return res1
       
   }
 
@@ -95,7 +175,7 @@ function fix_data_structure(data, query_name){
 }
 
 
-export async function exeQuery(query, query_name, func){
+export async function exeQuery(query, query_type, setData, setDict, currDict, query_num, setQuery_num){
   const {data, error} = await client.query({
     query: gql(query)
   })
@@ -106,12 +186,12 @@ export async function exeQuery(query, query_name, func){
 
   console.log("DATA: ", data)
 
-  let res = fix_data_structure(data, query_name)
+  let res = fix_data_structure(data, query_type, setDict, currDict, query_num, setQuery_num)
   
   console.log("RES: ", res)
 
-  if(func!=null){
-    func(res)
+  if(setData!=null){
+    setData(res)
   }
 
   return true

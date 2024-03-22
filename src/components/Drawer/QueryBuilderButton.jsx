@@ -41,7 +41,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, setShowHeatMap, 
-  setFlights,setMarkerMapData, setShowMarkerMap,
+  setFlights,setMarkerMapData, query_num, setQuery_num, setQueriesDict, QueriesDict, setShowMarkerMap,
   historyIndex, setHistoryIndex, addHistoryType, removeFromHistoryInApp
   }) {
   
@@ -193,7 +193,7 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
         {(openDialog) && (inputQuery.query != '') &&
           <BuildQueryDialog insertedQueryJson={insertedQueryJson} key={inputQuery.query} query={inputQuery} updateQuery={setInputQuery} 
           insertToHistory={insertToHistory} calledFromHistory={calledFromHistory}
-          setHeatMapData={setHeatMapData} updateOpen={closeChildDialog} setShowHeatMap={setShowHeatMap} setFlights={setFlights} setMarkerMapData={setMarkerMapData} setShowMarkerMap={setShowMarkerMap}/>}
+          setHeatMapData={setHeatMapData} updateOpen={closeChildDialog} setShowHeatMap={setShowHeatMap} setFlights={setFlights} setMarkerMapData={setMarkerMapData} query_num={query_num} setQuery_num={setQuery_num} setQueriesDict={setQueriesDict} QueriesDict={QueriesDict} setShowMarkerMap={setShowMarkerMap}/>}
     </div>
   );
 }
