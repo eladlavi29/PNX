@@ -42,7 +42,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, setShowHeatMap, 
   setFlights,setMarkerMapData, query_num, setQuery_num, setQueriesDict, QueriesDict, setShowMarkerMap,
-  historyIndex, setHistoryIndex, addHistoryType, removeFromHistoryInApp
   }) {
   
   const possibleQueries = [].concat.apply([], 

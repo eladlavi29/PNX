@@ -79,8 +79,7 @@ export default function DrawerButton({insertedQueryJson, switch1, setSwitch1, ba
                     case 'Build Query': return <QueryBuilderButton 
                       insertedQueryJson={insertedQueryJson} setHeatMapData={setHeatMapData} 
                       setShowHeatMap={setShowHeatMap} setFlights={setFlights} 
-                      setMarkerMapData={setMarkerMapData}  query_num={query_num} setQuery_num={setQuery_num} setQueriesDict={setQueriesDict} QueriesDict={QueriesDict} setShowMarkerMap={setShowMarkerMap}
-                      historyIndex={historyIndex} setHistoryIndex={setHistoryIndex} addHistoryType={addHistoryType} removeFromHistoryInApp={removeFromHistory}/>
+                      setMarkerMapData={setMarkerMapData}  query_num={query_num} setQuery_num={setQuery_num} setQueriesDict={setQueriesDict} QueriesDict={QueriesDict} setShowMarkerMap={setShowMarkerMap}/>
                       
                     case 'History': return <HistoryButton />
                     case 'Settings': return <SettingsButton 
