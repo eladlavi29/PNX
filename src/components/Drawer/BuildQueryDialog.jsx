@@ -36,13 +36,17 @@ function PaperComponent(props) {
   );
 }
 
-export default function BuildQueryDialog({insertedQueryJson, query, updateQuery, insertToHistory, calledFromHistory, updateOpen, setHeatMapData, setShowHeatMap, setFlights,setMarkerMapData, setShowMarkerMap}) {
+export default function BuildQueryDialog({insertedQueryJson, query, updateQuery, insertToHistory, 
+  calledFromHistory, updateOpen, setHeatMapData, setShowHeatMap, setFlights,
+  setMarkerMapData, setShowMarkerMap
+  }) {
   const [open, setOpen] = React.useState(true);
 
   const inputParams = getInputParams(query.query);
   const inputParamsTypes = getInputParamsTypes(query.query);
 
-  const updateInputParamsVals = (index, val) => updateQuery({...query,  inputParams: {
+  const updateInputParamsVals = (index, val) => updateQuery({...query,  
+    inputParams: {
     ...query.inputParams,
       [index]: (val)
     },
@@ -78,7 +82,7 @@ export default function BuildQueryDialog({insertedQueryJson, query, updateQuery,
             onSubmit: (event) => {
               if(!calledFromHistory)
                 insertToHistory({ ...query });
-              
+
               event.preventDefault();
               const formData = new FormData(event.currentTarget);
               // formData.append("region", region);

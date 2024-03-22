@@ -6,7 +6,11 @@ import Toolbar from '@mui/material/Toolbar';
 import DrawerButton from '../components/DrawerButton'
 import DBWindowButton from '../components/DBWindowButton'
 
-export default function MenuAppBar({insertedQueryJson, switch1, updateSwitch1, barSpeed, updateBarSpeed, setDBWindowOpen, DBWindowOpen, setHeatMapData, setShowHeatMap, setFlights,setMarkerMapData, setShowMarkerMap, allParams, params, setParams}) {
+export default function MenuAppBar({insertedQueryJson, switch1, updateSwitch1, barSpeed, 
+  updateBarSpeed, setDBWindowOpen, DBWindowOpen, setHeatMapData, setShowHeatMap, setFlights,
+  setMarkerMapData, setShowMarkerMap, allParams, params, setParams,
+  historyIndex, setHistoryIndex, addHistoryType, removeFromHistory
+  }) {
   return (
     <Box sx={{ width: "100vw"}}>
       <AppBar position="static" color="primary">
@@ -28,7 +32,8 @@ export default function MenuAppBar({insertedQueryJson, switch1, updateSwitch1, b
           <DrawerButton insertedQueryJson={insertedQueryJson} 
           switch1={switch1} setSwitch1={updateSwitch1} 
           barSpeed={barSpeed} updateBarSpeed={updateBarSpeed}
-          setHeatMapData={setHeatMapData} setShowHeatMap={setShowHeatMap} setFlights={setFlights} setMarkerMapData={setMarkerMapData} setShowMarkerMap={setShowMarkerMap} allParams={allParams} params={params} setParams={setParams}/>
+          setHeatMapData={setHeatMapData} setShowHeatMap={setShowHeatMap} setFlights={setFlights} setMarkerMapData={setMarkerMapData} setShowMarkerMap={setShowMarkerMap} allParams={allParams} params={params} setParams={setParams}
+          historyIndex={historyIndex} setHistoryIndex={setHistoryIndex} addHistoryType={addHistoryType} removeFromHistory={removeFromHistory}/>
 
           <DBWindowButton setWindowOpen={setDBWindowOpen} windowOpen={DBWindowOpen}/>
 

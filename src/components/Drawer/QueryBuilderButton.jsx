@@ -40,11 +40,16 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
 }));
 
-export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, setShowHeatMap, setFlights,setMarkerMapData, setShowMarkerMap}) {
+export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, setShowHeatMap, 
+  setFlights,setMarkerMapData, setShowMarkerMap,
+  historyIndex, setHistoryIndex, addHistoryType, removeFromHistoryInApp
+  }) {
+  
   const possibleQueries = [].concat.apply([], 
-    getQueryTypes().map((type) => 
+  getQueryTypes().map((type) => 
     getQueriesOfType(type).map((query) => 
     new Query(query, type))));
+
     const theme = useTheme();
     
     const [inputQuery, setInputQuery] = React.useState(new Query('', ''));
@@ -64,7 +69,7 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
     const convertToOptionName = (query) => {
       switch(query.type) {
         case 'Heat Map': return "⛆ "+ query.query
-        //📍
+        //📍  
         case 'Marker Map': return "🖈 " + query.query
         default: return "✈ " + query.query
       }
@@ -86,10 +91,14 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
     const [history, setHistory] = React.useState([]);
 
     const insertToHistory = (query) => {
+      query.index = historyIndex;
+      setHistoryIndex(historyIndex + 1); 
+      addHistoryType(query.type);
       setHistory([].concat(query, history));
     }
 
     const removeFromHistory = (query) => {
+      removeFromHistoryInApp(query.index);
       setHistory(history.filter(item => item !== query));
     }
 
@@ -137,9 +146,10 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
                       }
 
                       onChange={(event, newQuery) => {
-                        console.log(newQuery.slice(2));
+                        let words = newQuery.split(" ");
+    
                         setInputQuery(
-                          possibleQueries.filter((query)=>query.query == newQuery.slice(2))[0]
+                          possibleQueries.filter((query)=>query.query == words[1])[0]
                         );
                       }}
                     />

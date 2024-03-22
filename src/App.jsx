@@ -145,6 +145,20 @@ function App() {
   useEffect(() => {CalculateFlights(flights, position, mode, setMapData, client, displayParams, dateRange)}, [flights, position, mode, setMapData])
   useEffect(() => {CalculateDateRange(flights, setDateRange)}, [flights])
 
+
+  /*For Bourvine HaHamood*/
+  const [historyIndex, setHistoryIndex] = useState(0)
+  const [historyTypes, setHistoryTypes] = useState([])
+  function addHistoryType(type){
+    setHistoryTypes([].concat(historyTypes, type));
+    console.log("++++++++++++++++++++++++++")
+    console.log(historyTypes);
+    console.log("++++++++++++++++++++++++++")
+  }
+  function removeFromHistory(ind){
+    console.log(ind);
+  }
+
   const updateSwitch1 = (event) => {
     setSwitch1(event.target.checked);
   }
@@ -163,6 +177,7 @@ function App() {
     <TopBar insertedQueryJson={setInsertedQueryJson} 
         switch1={switch1} updateSwitch1={updateSwitch1}
         barSpeed={barSpeed} updateBarSpeed={updateBarSpeed}
+        historyIndex={historyIndex} setHistoryIndex={setHistoryIndex} addHistoryType={addHistoryType} removeFromHistory={removeFromHistory}
         setDBWindowOpen={setDBWindowOpen} DBWindowOpen={DBWindowOpen} setHeatMapData={setHeatMapData} setShowHeatMap={setShowHeatMap} setFlights={setFlights} setMarkerMapData={setMarkerMapData} setShowMarkerMap={setShowMarkerMap} allParams={allParams} params={displayParams} setParams={setDisplayParams}/>
     <ApolloProvider client={client}>
       {memoMap}
