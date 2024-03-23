@@ -219,13 +219,13 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
                           })()}
                           </ListItemIcon>
                           <ListItemText primary={query.query} />
-                          <IconButton onClick={() => 
+                          {/* <IconButton onClick={() => 
                             { setCalledFromHistory(true);
                               setInputQuery(query); 
                               setOpenDialog(true);
                               setOpen(false);}}>
                           <EditIcon fontSize='small'/>
-                          </IconButton>
+                          </IconButton> */}
                           <IconButton>
                           <CloseIcon fontSize='small' onClick={() => removeFromHistory(query)}/>
                           </IconButton>
