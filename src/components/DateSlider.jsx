@@ -15,8 +15,22 @@ import FastForwardIcon from "@mui/icons-material/FastForward";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import FastRewindIcon from "@mui/icons-material/FastRewind";
-
-const DateSlider = ({ start, end, value, setValue, mode, setMode, show, speed, setSpeed}) => {
+function relShift(number) {
+  return number / 4;
+}
+function absShift(number) {
+  return number * 10;
+}
+const DateSlider = ({
+  start,
+  end,
+  value,
+  setValue,
+  mode,
+  setMode,
+  show,
+  speed,
+}) => {
   //const [start, setStart] = useState(new Date("2023-02-11T11:23:00"));
   //const [end, setEnd] = useState(new Date("2023-02-12T19:43:00"));
   const [min, setMin] = useState(0);
@@ -39,27 +53,57 @@ const DateSlider = ({ start, end, value, setValue, mode, setMode, show, speed, s
 
     return differenceInSeconds;
   };
+  useEffect(() => {
+    if (isPlaying) {
+      handlePlayStop();
+    }
+    if (mode === "REL") {
+      setStep(relShift(speed));
+    } else {
+      setStep(absShift(speed));
+    }
+  }, [speed]);
 
   useEffect(() => {
+    //changed
     let differenceInSeconds = calculateDateDifferenceInSeconds(start, end);
     setMax(differenceInSeconds);
     setValue(differenceInSeconds / 2);
-    setStep(60);
+    if (isPlaying) {
+      handlePlayStop();
+    }
+    setMode("ABS");
   }, [start, end]);
 
   useEffect(() => {
+    // solved problem #1 - need to be before the next
+    if (value >= max) {
+      setValue(max);
+      if (isPlaying) {
+        handlePlayStop();
+      }
+    }
+    if (value <= min) {
+      console.log("value is less than min");
+      setValue(min);
+    }
+  }, [value, isPlaying]);
+
+  useEffect(() => {
+    if (isPlaying) {
+      //solved problem #2
+      handlePlayStop();
+    }
     if (mode === "REL") {
       setMax(100);
       setValue(50);
-      setStep(0.1);
-      console.log(value);
+      setStep(relShift(speed));
     } else {
       let differenceInSeconds = calculateDateDifferenceInSeconds(start, end);
       setMax(differenceInSeconds);
       setValue(differenceInSeconds / 2);
-      setStep(60);
+      setStep(absShift(speed));
     }
-    setIsPlaying(false);
   }, [mode]);
 
   const handlePlayStop = () => {
@@ -84,6 +128,9 @@ const DateSlider = ({ start, end, value, setValue, mode, setMode, show, speed, s
   };
 
   const handleModeChange = (event, newMode) => {
+    if (newMode === null) {
+      return;
+    }
     setMode(newMode);
   };
 
@@ -145,101 +192,101 @@ const DateSlider = ({ start, end, value, setValue, mode, setMode, show, speed, s
       }}
       style={{ zIndex: 3 }}
     >
-    <Box
-      style={{
-        zIndex: 1000,
-        display: "flex",
-        alignItems: "center",
-        backgroundColor: "#fff",
-        padding: "15px",
-        borderRadius: "10px",
-      }}
-    >
       <Box
         style={{
+          zIndex: 1000,
           display: "flex",
           alignItems: "center",
-          marginRight: "20px",
+          backgroundColor: "#fff",
+          padding: "15px",
+          borderRadius: "10px",
         }}
       >
-        <IconButton onClick={handleDecrease}>
-          <FastRewindIcon />
-        </IconButton>
-        <IconButton onClick={handlePlayStop}>
-          {isPlaying ? <PauseCircleIcon /> : <PlayCircleIcon />}
-        </IconButton>
-        <IconButton onClick={handleIncrease}>
-          <FastForwardIcon />
-        </IconButton>
-      </Box>
-      <Box
-        style={{
-          margin: 0,
-          marginRight: "20px",
-        }}
-      >
-        <Typography
+        <Box
           style={{
-            color: "black",
+            display: "flex",
+            alignItems: "center",
+            marginRight: "20px",
           }}
         >
-          {mode === "REL" ? "0%" : getNiceDateTime(start)}
-        </Typography>
-      </Box>
+          <IconButton onClick={handleDecrease}>
+            <FastRewindIcon />
+          </IconButton>
+          <IconButton onClick={handlePlayStop}>
+            {isPlaying ? <PauseCircleIcon /> : <PlayCircleIcon />}
+          </IconButton>
+          <IconButton onClick={handleIncrease}>
+            <FastForwardIcon />
+          </IconButton>
+        </Box>
+        <Box
+          style={{
+            margin: 0,
+            marginRight: "20px",
+          }}
+        >
+          <Typography
+            style={{
+              color: "black",
+            }}
+          >
+            {mode === "REL" ? "0%" : getNiceDateTime(start)}
+          </Typography>
+        </Box>
 
-      <Slider
-        value={value}
-        onChange={(event, newValue) => setValue(newValue)}
-        aria-labelledby="continuous-slider"
-        style={{ flex: "2", marginRight: "20px"}}
-        min={min}
-        max={max}
-        step={1}
-        getAriaValueText={
-          mode == "REL" ? calculatePercantage : calculateNewDate
-        }
-        valueLabelFormat={
-          mode == "REL" ? calculatePercantage : calculateNewDate
-        }
-        valueLabelDisplay="off"
-      />
-      <Box
-        style={{
-          margin: 0,
-          marginRight: "20px",
-        }}
-      >
-        <Typography
+        <Slider
+          value={value}
+          onChange={(event, newValue) => setValue(newValue)}
+          aria-labelledby="continuous-slider"
+          style={{ flex: "2", marginRight: "20px" }}
+          min={min}
+          max={max}
+          step={1}
+          getAriaValueText={
+            mode == "REL" ? calculatePercantage : calculateNewDate
+          }
+          valueLabelFormat={
+            mode == "REL" ? calculatePercantage : calculateNewDate
+          }
+          valueLabelDisplay="auto"
+        />
+        <Box
           style={{
-            color: "black",
+            margin: 0,
+            marginRight: "20px",
           }}
         >
-          {mode === "REL" ? "100%" : getNiceDateTime(end)}
-        </Typography>
-      </Box>
-      <div>
-        <ToggleButtonGroup
-          value={mode}
-          exclusive
-          onChange={handleModeChange}
-          aria-label="text alignment"
-        >
-          <ToggleButton value="ABS" aria-label="absolute">
-            ABS
-          </ToggleButton>
-          <ToggleButton value="REL" aria-label="relative">
-            REL
-          </ToggleButton>
-        </ToggleButtonGroup>
-        {/* <IconButton onClick={handleDecrease}>
+          <Typography
+            style={{
+              color: "black",
+            }}
+          >
+            {mode === "REL" ? "100%" : getNiceDateTime(end)}
+          </Typography>
+        </Box>
+        <div>
+          <ToggleButtonGroup
+            value={mode}
+            exclusive
+            onChange={handleModeChange}
+            aria-label="text alignment"
+          >
+            <ToggleButton value="ABS" aria-label="absolute">
+              ABS
+            </ToggleButton>
+            <ToggleButton value="REL" aria-label="relative">
+              REL
+            </ToggleButton>
+          </ToggleButtonGroup>
+          {/* <IconButton onClick={handleDecrease}>
           <AddIcon />
         </IconButton>
         <Typography>fun</Typography>
         <IconButton onClick={handleIncrease}>
           <RemoveIcon />
         </IconButton> */}
-      </div>
-    </Box>
+        </div>
+      </Box>
     </Drawer>
   );
 };
