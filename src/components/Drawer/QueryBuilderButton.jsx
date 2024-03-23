@@ -121,7 +121,31 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
           }
 
       }
-      setHistory(history.filter(item => item !== query));
+      setHistory(history.filter(item => item.index != query.index));
+    }
+
+    function instertAndRemoveFromHistory(query, newQuery) {
+      switch(query.type) {
+        case 'Heat Map': 
+          let res = deleteQuery(query.index, query.type, setQueriesDict, QueriesDict, setHeatMapData);
+          setShowHeatMap(res)
+
+        case 'Marker Map': 
+          console.log("HERE-Marker Map, query.index: ", query.index)
+          let res1 = deleteQuery(query.index, query.type, setQueriesDict, QueriesDict, setMarkerMapData);
+          setShowMarkerMap(res1)
+
+        case 'Plane':
+          if (query.type=='Plane'){
+            deleteQuery(query.index, query.type, setQueriesDict, QueriesDict, setFlights);
+          }
+
+      }
+
+      setHistory([].concat(newQuery, (history.filter(item => item.index != query.index))));
+
+      query.index = historyIndex;
+      setHistoryIndex(historyIndex + 1); 
     }
 
   return (
@@ -214,7 +238,7 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
         <Divider />
         {(openDialog) && (inputQuery.query != '') &&
           <BuildQueryDialog insertedQueryJson={insertedQueryJson} key={inputQuery.query} query={inputQuery} updateQuery={setInputQuery} 
-          insertToHistory={insertToHistory} calledFromHistory={calledFromHistory}
+          insertToHistory={insertToHistory} instertAndRemoveFromHistory={instertAndRemoveFromHistory} calledFromHistory={calledFromHistory}
           setHeatMapData={setHeatMapData} updateOpen={closeChildDialog} setShowHeatMap={setShowHeatMap} setFlights={setFlights} setMarkerMapData={setMarkerMapData} query_num={query_num} setQuery_num={setQuery_num} setQueriesDict={setQueriesDict} QueriesDict={QueriesDict} setShowMarkerMap={setShowMarkerMap}/>}
     </div>
   );
