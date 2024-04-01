@@ -122,9 +122,9 @@ function fix_data_structure(data, query_type, setDict, currDict, query_num, setQ
 
     case 'Plane':
       let dict = (data["get_flights"])[0]
-
+      console.log(`dict is ${dict["fid"]}`)
       let d_start = new Date(dict['start']);
-      console.log("actual date: ", new Date(dict["start"]))
+      // console.log("actual date: ", new Date(dict["start"]))
       // d_start.setSeconds(d_start.getSeconds() + Math.floor(dict["start"]/1000));
       
       let d_end = new Date(dict['end']);

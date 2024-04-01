@@ -30,7 +30,8 @@ function App() {
   // list of all possible params, in the future will come from GQL
   const allParams = ['time', 'tele_pp_lat', 'tele_pp_long', 'tele_altitude', 'tele_fuel_kilo', 'ecu_fuel_press', 'tele_fuel_cnspt', 'eng_throt_cmd', 'tele_rpm', 'air_temp', 'tele_eng_air_temp', 'ecu_air_temp_0', 'ecu_water_temp_0', 'ecu_air_temp_1', 'ecu_water_temp_1', 'eng_ref_temp_filter', 'tele_ap_pitch', 'tele_heading', 'tele_ap_roll', 'cas_knots', 'lights_stat', 'tele_roc']
   // list of lists in the format [lat, long, strngth]. this is the data for the heatmap
-  const [queriesDict, setQueriesDict] = useState({"Marker Map":{}, "Heat Map":{}, "Plane":{"unique":({1: [new Date("2024-01-14T23:40:06"), new Date("2024-01-15T00:40:01")], 2: [new Date("2024-01-17T09:07:51"), new Date("2024-01-17T09:25:44")]})   }})
+  // const [queriesDict, setQueriesDict] = useState({"Marker Map":{}, "Heat Map":{}, "Plane":{"unique":({1: [new Date("2024-01-14T23:40:06"), new Date("2024-01-15T00:40:01")], 2: [new Date("2024-01-17T09:07:51"), new Date("2024-01-17T09:25:44")]})   }})
+  const [queriesDict, setQueriesDict] = useState({"Marker Map":{}, "Heat Map":{}, "Plane":{}})
   const [markerMapData, setMarkerMapData] = useState([])
   const [query_num, setQuery_num] = useState(0)
   
@@ -125,7 +126,7 @@ function App() {
   // mode of the playbar
   const [mode, setMode] = useState('ABS')
   // fids and dates of flights to display
-  const [flights, setFlights] = useState({1: [new Date("2024-01-14T23:40:06"), new Date("2024-01-15T00:40:01")], 2: [new Date("2024-01-17T09:07:51"), new Date("2024-01-17T09:25:44")]})
+  const [flights, setFlights] = useState({})//useState({1: [new Date("2024-01-14T23:40:06"), new Date("2024-01-15T00:40:01")], 2: [new Date("2024-01-17T09:07:51"), new Date("2024-01-17T09:25:44")]})
   // position of playbar (circle thing in the playbar), time selected by playbar
   const [position, setPosition] = useState(0)
   // start and end date (in seconds) of all flights combined
@@ -145,7 +146,7 @@ function App() {
   //   }
   // });
 
-  useEffect(() => {CalculateFlights(flights, position, mode, setMapData, client, displayParams, dateRange)}, [flights, position, mode, setMapData])
+  useEffect(() => {CalculateFlights(flights, position, mode, setMapData, client, displayParams, dateRange)}, [flights, position, mode])
   useEffect(() => {CalculateDateRange(flights, setDateRange)}, [flights])
 
   const updateSwitch1 = (event) => {
