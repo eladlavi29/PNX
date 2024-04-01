@@ -52,7 +52,7 @@ const DateSlider = ({ start, end, value, setValue, mode, setMode, show, speed, s
       setMax(100);
       setValue(50);
       setStep(0.1);
-      console.log(value);
+      // console.log(value);
     } else {
       let differenceInSeconds = calculateDateDifferenceInSeconds(start, end);
       setMax(differenceInSeconds);
@@ -70,8 +70,8 @@ const DateSlider = ({ start, end, value, setValue, mode, setMode, show, speed, s
         setValue((prevValue) => Math.min(prevValue + step, max));
       }, 1); // Adjust the interval as needed
     }
-    console.log(value);
-    console.log(max);
+    // console.log(value);
+    // console.log(max);
     setIsPlaying(!isPlaying);
   };
 
@@ -88,7 +88,7 @@ const DateSlider = ({ start, end, value, setValue, mode, setMode, show, speed, s
   };
 
   const getNiceDateTime = (now) => {
-    if (now === null) {
+    if (!now) {
       return "N/A";
     }
     const date = now.toLocaleDateString("en-GB", {

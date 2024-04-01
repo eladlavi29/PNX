@@ -40,6 +40,17 @@ def create_json_queries():
     dict_queries['RPM_FOR_FID'] = {'type':'Heat Map', 'params':['fid'], 'params_types':['Number'], 'template': '''query{
         heat_map(query: "select tele_pp_lat as lat,tele_pp_long as lon,tele_rpm as strength from fast_params where fid=$fid$ and tele_pp_lat!=0 and tele_pp_long!=0") {lat lon strength}
     }'''}
+    dict_queries['RPM_THRESH_FID'] = {'type':'Heat Map', 'params':['fid', 'thresh', 'param', 'op', 'norm'], 'params_types':['Number', 'Number', 'String', 'String', 'Number'], 'template': '''
+                                    query{
+  flight(fid: $fid$) {
+    heatmap_from_rows(param: "$param$", thresh: $thresh$, op: "$op$", norm: $norm$) {
+      lat
+      lon
+      strength
+    }
+  } 
+}
+                                      '''}
     dict_queries['Plane_1'] = {'type':'Plane', 'params':['fid'], 'params_types':['Number'], 'template': '''query{
         get_flights(query: "select fid, recording_start as start, recording_end as end from metadata where fid=$fid$") {fid start end}
     }'''}
@@ -52,10 +63,11 @@ def create_json_queries():
         fid: $fid$, number: $number$, string: $string$, region: $region, dateFrom: $dateFrom$, dateTo: $dateTo$, timeFrom: $timeFrom$, timeTo: $timeTo$
         }'''}
     
-    dict_types = {'Heat Map': ['RPM_FOR_FID'], 'Marker Map':['START_END_FOR_FID', 'STAM'] , 'Plane':['Plane_1'] }
+    dict_types = {'Heat Map': ['RPM_FOR_FID', 'RPM_THRESH_FID'], 'Marker Map':['START_END_FOR_FID', 'STAM'] , 'Plane':['Plane_1'] }
     
     total_dict = {'queries':dict_queries, 'types': dict_types}
-  
+    # print(total_dict['queries']['RPM_THRESH_FID'])
+    # print(total_dict['types']['Heat Map'])
     with open("queries.json", "w") as f:
         json.dump(total_dict, f)
 
