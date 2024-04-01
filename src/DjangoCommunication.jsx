@@ -112,9 +112,62 @@ export function deleteQuery(index, type, setDict, currDict, setData){
 }
 
 
+export function setShowall(setShowHeatMap, setShowMarkerMap, res){
+  // console.log("SHOWALL- ", res)
+  setShowHeatMap(res)
+  setShowMarkerMap(res)
+}
+
+
+export function setAllData(setHeatMapData, setMarkerMapData, setFlights, QueriesDict){
+  // let res = return_res_good_structure(QueriesDict, "Heat Map")
+  // setHeatMapData(res)
+
+  let res = return_res_good_structure(QueriesDict, "Marker Map")
+  setMarkerMapData(res)
+
+  res = return_res_good_structure(QueriesDict, "Plane")
+  setFlights(res)
+}
+
+
+export function return_res_good_structure(copy, query_type){
+  switch(query_type){
+    case 'Plane':
+
+      var res_dict = {}
+      for(var key in copy['Plane'])
+      {
+        var curr_dict = (copy['Plane'])[key]
+        for(var inn_key in curr_dict)
+        {
+          res_dict[inn_key] = curr_dict[inn_key]
+        }
+      }
+
+      return res_dict
+
+    case 'Marker Map':
+      let res1 = []
+
+      for(var key in copy['Marker Map'])
+      {
+        res1 = res1.concat((copy['Marker Map'])[key])
+      }
+
+      return res1
+      
+  }
+
+  return null
+}
+
+
+
 function fix_data_structure(data, query_type, setDict, currDict, query_num, setQuery_num){
   switch(query_type){
     case 'Heat Map':
+      setQuery_num(query_num+1)
       let res =  (data["heat_map"]).map((dict) => (
         ([dict["lat"],dict["lon"],dict["strength"]])
       ));
