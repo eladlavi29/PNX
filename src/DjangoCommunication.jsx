@@ -115,6 +115,12 @@ export function deleteQuery(index, type, setDict, currDict, setData){
 function fix_data_structure(data, query_type, setDict, currDict, query_num, setQuery_num){
   switch(query_type){
     case 'Heat Map':
+      if (data && data['flight'] && data['flight']['heatmap_from_rows']) {
+        let res = data['flight']['heatmap_from_rows'].map((dict) => (
+          ([dict["lat"],dict["lon"],dict["strength"]]))
+        );
+        return res;
+      }
       let res =  (data["heat_map"]).map((dict) => (
         ([dict["lat"],dict["lon"],dict["strength"]])
       ));
@@ -122,7 +128,7 @@ function fix_data_structure(data, query_type, setDict, currDict, query_num, setQ
 
     case 'Plane':
       let dict = (data["get_flights"])[0]
-      console.log(`dict is ${dict["fid"]}`)
+      // console.log(`dict is ${dict["fid"]}`)
       let d_start = new Date(dict['start']);
       // console.log("actual date: ", new Date(dict["start"]))
       // d_start.setSeconds(d_start.getSeconds() + Math.floor(dict["start"]/1000));
