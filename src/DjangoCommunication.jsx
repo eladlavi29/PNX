@@ -179,6 +179,7 @@ function fix_data_structure(data, query_type, setDict, currDict, query_num, setQ
 
       console.log("dict_list: ", dict_list)
 
+      var obj={}
       for (let i = 0; i < dict_list.length; i++) {
         let dict = dict_list[i]
         console.log("dict: ", dict)
@@ -186,7 +187,6 @@ function fix_data_structure(data, query_type, setDict, currDict, query_num, setQ
         let d_end = new Date(dict['end']);
         let fid_1 = dict["fid"]
       
-        var obj={}
         obj[fid_1] = [d_start,d_end];
       }
 
