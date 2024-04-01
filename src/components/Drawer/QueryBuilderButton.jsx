@@ -24,7 +24,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-import {getQueriesOfType, getQueryTypes, deleteQuery} from '../../DjangoCommunication';
+import {getQueriesOfType, getQueryTypes, deleteQuery, setShowall, setAllData} from '../../DjangoCommunication';
 import Query from '../../Query'
 import { ButtonGroup } from '@mui/material';
 import { Edit } from '@mui/icons-material';
@@ -108,12 +108,12 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
       switch(query.type) {
         case 'Heat Map': 
           let res = deleteQuery(query.index, query.type, setQueriesDict, QueriesDict, setHeatMapData);
-          setShowHeatMap(res)
+          setShowall(setShowHeatMap, setShowMarkerMap, res)
 
         case 'Marker Map': 
           console.log("HERE-Marker Map, query.index: ", query.index)
           let res1 = deleteQuery(query.index, query.type, setQueriesDict, QueriesDict, setMarkerMapData);
-          setShowMarkerMap(res1)
+          setShowall(setShowHeatMap, setShowMarkerMap, res1)
 
         case 'Plane':
           if (query.type=='Plane'){
@@ -121,6 +121,8 @@ export default function QueryBuilderButton({insertedQueryJson, setHeatMapData, s
           }
 
       }
+      setAllData(setHeatMapData, setMarkerMapData, setFlights, QueriesDict)
+
       setHistory(history.filter(item => item.index != query.index));
     }
 

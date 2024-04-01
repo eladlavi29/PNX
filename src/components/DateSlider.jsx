@@ -114,8 +114,8 @@ const DateSlider = ({
         setValue((prevValue) => Math.min(prevValue + step, max));
       }, 1); // Adjust the interval as needed
     }
-    console.log(value);
-    console.log(max);
+    // console.log(value);
+    // console.log(max);
     setIsPlaying(!isPlaying);
   };
 
@@ -135,7 +135,7 @@ const DateSlider = ({
   };
 
   const getNiceDateTime = (now) => {
-    if (now === null) {
+    if (!now) {
       return "N/A";
     }
     const date = now.toLocaleDateString("en-GB", {
