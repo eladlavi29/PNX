@@ -62,6 +62,7 @@ function App() {
   const [queriesDict, setQueriesDict] = useState({"Marker Map":{}, "Heat Map":{}, "Plane":{}})
   const [markerMapData, setMarkerMapData] = useState([])
   const [query_num, setQuery_num] = useState(0)
+  const [tableSize, setTableSize] = useState("25%")
   
     // [
     //   [

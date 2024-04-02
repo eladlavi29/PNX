@@ -51,7 +51,7 @@ def create_json_queries():
   } 
 }
                                       '''}
-    dict_queries['Plane_1'] = {'type':'Plane', 'params':['fid'], 'params_types':['Number'], 'template': '''query{
+    dict_queries['GET_FLIGHT'] = {'type':'Plane', 'params':['fid'], 'params_types':['Number'], 'template': '''query{
         get_flights(query: "select fid, recording_start as start, recording_end as end from metadata where fid=$fid$") {fid start end}
     }'''}
     dict_queries['START_END_FOR_FID'] = {'type':'Marker Map', 'params':['fid'], 'params_types':['Number'], 'template': '''query{
@@ -59,11 +59,11 @@ def create_json_queries():
         lat lon content}
         }'''}
 
-    dict_queries['STAM'] = {'type':'Marker Map', 'params':['fid', 'number', 'string', 'region', 'dateFrom', 'dateTo', 'timeFrom', 'timeTo'], 'params_types':['Number', 'Number', 'String', 'Region', 'Date', 'Date', 'Time', 'Time'], 'template': '''query{
-        fid: $fid$, number: $number$, string: $string$, region: $region, dateFrom: $dateFrom$, dateTo: $dateTo$, timeFrom: $timeFrom$, timeTo: $timeTo$
-        }'''}
+    # dict_queries['STAM'] = {'type':'Marker Map', 'params':['fid', 'number', 'string', 'region', 'dateFrom', 'dateTo', 'timeFrom', 'timeTo'], 'params_types':['Number', 'Number', 'String', 'Region', 'Date', 'Date', 'Time', 'Time'], 'template': '''query{
+    #     fid: $fid$, number: $number$, string: $string$, region: $region, dateFrom: $dateFrom$, dateTo: $dateTo$, timeFrom: $timeFrom$, timeTo: $timeTo$
+    #     }'''}
     
-    dict_types = {'Heat Map': ['RPM_FOR_FID', 'RPM_THRESH_FID'], 'Marker Map':['START_END_FOR_FID', 'STAM'] , 'Plane':['Plane_1'] }
+    dict_types = {'Heat Map': ['RPM_FOR_FID', 'RPM_THRESH_FID'], 'Marker Map':['START_END_FOR_FID'] , 'Plane':['GET_FLIGHT'] }
     
     total_dict = {'queries':dict_queries, 'types': dict_types}
     # print(total_dict['queries']['RPM_THRESH_FID'])
