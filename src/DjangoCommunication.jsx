@@ -8,7 +8,34 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-import queries_dict from "./queries.json";
+// import queries_dict from "./queries.json";
+let queries_dict = {}
+await client.query({query: gql`
+  query{
+    get_queries {
+      name
+      params
+      params_types
+      type
+      template
+    }
+  }
+`}).then((r) => {
+  let queries = {}
+  let types = {}//"Heat Map": [], "Marker Map": [], "Plane": []}
+  r["data"]["get_queries"].forEach((q) => {
+    queries[q["name"]] = q
+    if (!(q["type"] in types)) {
+      types[q["type"]] = []
+    }
+    types[q["type"]] = [...types[q["type"]], q["name"]]
+  })
+  queries_dict = {"queries": queries, "types": types}
+  // console.log(queries_dict["types"])
+  // console.log(Object.keys(queries_dict['types']))
+  // // console.log(`qs are: ${JSON.stringify(queries_dict, null, 2)}`)
+})
+
 
 export function getTypeofQuery(q_name) {
   return ((queries_dict['queries'])[q_name])['type'];

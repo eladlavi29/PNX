@@ -55,7 +55,7 @@ def create_json_queries():
         get_flights(query: "select fid, recording_start as start, recording_end as end from metadata where fid=$fid$") {fid start end}
     }'''}
     dict_queries['START_END_FOR_FID'] = {'type':'Marker Map', 'params':['fid'], 'params_types':['Number'], 'template': '''query{
-        marker_map(query: "(select fast_params.tele_pp_lat as lat,fast_params.tele_pp_long as lon,'start: fid=$fid$' as content from fast_params,flight_to_fid where fast_params.fid=$fid$ and flight_to_fid.fid=$fid$ and fast_params.tele_pp_lat!=0 and fast_params.tele_pp_long!=0 order by packet asc limit 1) UNION ALL (select fast_params.tele_pp_lat as lat,fast_params.tele_pp_long as lon,'end: fid=$fid$' as content from fast_params,flight_to_fid where fast_params.fid=$fid$ and flight_to_fid.fid=$fid$ and fast_params.tele_pp_lat!=0 and fast_params.tele_pp_long!=0 order by packet desc limit 1)") {
+        marker_map(query: "(select slow_params.tele_pp_lat as lat,slow_params.tele_pp_long as lon,'start: fid=$fid$' as content from slow_params where slow_params.fid = $fid$ and slow_params.tele_pp_lat!=0 and slow_params.tele_pp_long!=0 order by packet asc limit 1) UNION ALL (select slow_params.tele_pp_lat as lat,slow_params.tele_pp_long as lon,'start: fid=$fid$' as content from slow_params where slow_params.fid = $fid$ and slow_params.tele_pp_lat!=0 and slow_params.tele_pp_long!=0 order by packet desc limit 1)") {
         lat lon content}
         }'''}
 
