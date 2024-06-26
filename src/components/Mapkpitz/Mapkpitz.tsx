@@ -4,11 +4,13 @@ import {
   Popup,
   TileLayer,
   useMapEvents,
+  Polyline
 } from "react-leaflet";
 import { useState, useEffect, useRef } from "react";
 import RotatedMarker from "./RotatedMarker";
 import { Plane } from "../../Icons/Icons";
 import L from "leaflet";
+import "leaflet-draw/dist/leaflet.draw.css";
 import "leaflet/dist/leaflet.css";
 import "./Mapkpitz.css";
 import { Label } from "@mui/icons-material";
@@ -16,6 +18,7 @@ import React from "react";
 import config from "../../config.js";
 import { HeatmapLayer } from "react-leaflet-heatmap-layer-v3";
 import { gql, useQuery } from "@apollo/client";
+import antenas_json from "../../antenas_config.json";
 
 type direction = 1 | -1;
 
@@ -35,7 +38,23 @@ const Mapkpitz = ({ mapData, showHeatMap, heatMapData, showMarkerMap, markerMapD
   const zoomRef = useRef(7);
   const centerRef = useRef([31.5, 34.75]);
   
+  const connection_color = (param) => {
+    switch (true) {
+      case (param >= 0 && param < 10):
+        return 'green';
+      case (param >= 10 && param < 20):
+        return 'red';
+      default:
+        return 'blue';
+    }
+  };
 
+  const undefined_to_number = (param) => {
+    if (param === undefined) {
+      return 0;
+    }
+    return param;
+  };
   // Modify the icon size to make it bigger
   const uavIcon = new L.Icon({
     iconUrl: "/uav.png", // assuming Plane is the path to your icon image
@@ -43,6 +62,17 @@ const Mapkpitz = ({ mapData, showHeatMap, heatMapData, showMarkerMap, markerMapD
     iconAnchor: [30, 30], // center the icon on the marker's position
   });
 
+  const antenaIcon = new L.Icon({
+    iconUrl: "/antena.png", // assuming Plane is the path to your icon image
+    iconSize: [30, 30], // adjust the size as needed
+    iconAnchor: [15, 15], // center the icon on the marker's position
+  });
+
+  const antenas = JSON.parse(JSON.stringify(antenas_json));
+  // console.log("kaki", antenas["2"]);
+  // console.log(typeof antenas);
+  // console.log(mapData);
+  
   const markerIcon = new L.Icon({
     iconUrl: "/location_pin.png", // assuming Plane is the path to your icon image
     iconSize: [60, 60], // adjust the size as needed
@@ -56,7 +86,10 @@ const Mapkpitz = ({ mapData, showHeatMap, heatMapData, showMarkerMap, markerMapD
   };
   return (
     <>
+
       <MapContainer
+      
+
         center={centerRef.current}
         zoom={zoomRef.current}
         key={1}
@@ -83,7 +116,15 @@ const Mapkpitz = ({ mapData, showHeatMap, heatMapData, showMarkerMap, markerMapD
           </Popup>
         </RotatedMarker> */}
 
-        {Object.keys(mapData).map((key) => (
+        {/* showing planes: */}
+        {Object.keys(mapData).map((key) => {
+          
+          // console.log('tele_heading:', mapData[key].tele_heading);
+          // try{
+          //   console.log('antena:', antenas[Math.trunc(mapData[key].tele_heading / 100)]);
+          // } catch (e) { console.log('error! ', mapData[key].tele_heading); }
+
+          return(
           <RotatedMarker
             key={key}
             position={[
@@ -95,10 +136,20 @@ const Mapkpitz = ({ mapData, showHeatMap, heatMapData, showMarkerMap, markerMapD
             rotationOrigin="center"
           >
             <Popup>
-              fid: {key} | altitude: {mapData[key].tele_altitude}ft
+              fid: {key} | altitude: {mapData[key].tele_altitude}ft, antena:{Math.floor(mapData[key].tele_heading / 100)}
             </Popup>
+            <Polyline pathOptions={{color: connection_color(mapData[key].tele_altitude % 50)}} 
+            positions={[
+              [mapData[key].tele_pp_lat * (180 / Math.PI), 
+              mapData[key].tele_pp_long * (180 / Math.PI),], 
+              [antenas[Math.floor(undefined_to_number(mapData[key].tele_heading / 100))].lat, 
+              antenas[Math.floor(undefined_to_number(mapData[key].tele_heading / 100))].long]]} />
           </RotatedMarker>
-        ))}
+          );
+        }
+        )}
+
+        {/* showing heatmap: */}
         {showHeatMap && (
           <HeatmapLayer
             points={heatMapData}
@@ -109,6 +160,8 @@ const Mapkpitz = ({ mapData, showHeatMap, heatMapData, showMarkerMap, markerMapD
             {...heatmapOptions}
           />
         )}
+
+        {/* showing markers: */}
         {showMarkerMap && (
             markerMapData.map((type, idx) => {
               const markerIcon = new L.Icon({
@@ -136,6 +189,23 @@ const Mapkpitz = ({ mapData, showHeatMap, heatMapData, showMarkerMap, markerMapD
             );
           })
         )}
+        
+
+        {/* showing antenas: */}
+        {Object.keys(antenas).map((key) => (
+            <Marker
+              key={Math.random() + Math.random()}
+              position={[
+                antenas[key].lat,
+                antenas[key].long
+              ]}
+              icon={antenaIcon} // Use the custom icon
+            >
+              <Popup>
+                Antena: {key}, LAT: {antenas[key].lat}, LONG: {antenas[key].long}
+              </Popup>
+            </Marker>
+        ))}
       </MapContainer>
     </>
   );
