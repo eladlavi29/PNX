@@ -24,11 +24,13 @@
     "django": "^1.0.0",
     "graphql": "^16.8.1",
     "leaflet": "^1.9.4",
+    "leaflet-draw": "^1.0.4",
     "leaflet-rotatedmarker": "^0.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
     "react-leaflet": "^4.2.1",
+    "react-leaflet-draw": "^0.20.4",
     "react-leaflet-heatmap-layer-v3": "^3.0.3-beta-1"
   },
   "devDependencies": {
