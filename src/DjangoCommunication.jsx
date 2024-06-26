@@ -174,18 +174,21 @@ function fix_data_structure(data, query_type, setDict, currDict, query_num, setQ
       return res;
 
     case 'Plane':
-      let dict = (data["get_flights"])[0]
-      console.log(`dict is ${dict["fid"]}`)
-      let d_start = new Date(dict['start']);
-      // console.log("actual date: ", new Date(dict["start"]))
-      // d_start.setSeconds(d_start.getSeconds() + Math.floor(dict["start"]/1000));
-      
-      let d_end = new Date(dict['end']);
-      // d_end.setSeconds(d_end.getSeconds() + Math.floor(dict["end"]/1000));
-      let fid_1 = dict["fid"]
-      
+
+      let dict_list = (data["get_flights"])
+
+      console.log("dict_list: ", dict_list)
+
       var obj={}
-      obj[fid_1] = [d_start,d_end];
+      for (let i = 0; i < dict_list.length; i++) {
+        let dict = dict_list[i]
+        console.log("dict: ", dict)
+        let d_start = new Date(dict['start']);
+        let d_end = new Date(dict['end']);
+        let fid_1 = dict["fid"]
+      
+        obj[fid_1] = [d_start,d_end];
+      }
 
       var tag = query_num
       setQuery_num(query_num+1)
