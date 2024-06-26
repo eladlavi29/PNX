@@ -18,7 +18,6 @@ import React from "react";
 import config from "../../config.js";
 import { HeatmapLayer } from "react-leaflet-heatmap-layer-v3";
 import { gql, useQuery } from "@apollo/client";
-import { Polyline } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 import antenas_json from "../../antenas_config.json";
@@ -186,10 +185,10 @@ const Mapkpitz = ({
         {/* showing planes: */}
         {Object.keys(mapData).map((key) => {
           
-          // console.log('tele_heading:', mapData[key].tele_heading);
-          // try{
-          //   console.log('antena:', antenas[Math.trunc(mapData[key].tele_heading / 100)]);
-          // } catch (e) { console.log('error! ', mapData[key].tele_heading); }
+          console.log('tele_heading:', mapData[key].tele_heading);
+          try{
+            console.log('antena:', antenas[undefined_to_number(Math.trunc(mapData[key].tele_heading / 100)) ]);
+          } catch (e) { console.log('error! ', mapData[key].tele_heading); }
 
           return(
           <RotatedMarker
