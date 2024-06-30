@@ -30,7 +30,7 @@
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
     "react-leaflet": "^4.2.1",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.2",
     "react-leaflet-draw": "^0.20.4",
     "react-leaflet-heatmap-layer-v3": "^3.0.3-beta-1"
   },
