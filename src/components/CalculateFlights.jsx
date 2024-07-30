@@ -50,6 +50,17 @@ export async function CalculateFlights(flights, position, mode, setMapData, clie
                 let time = new Date(start + (position / 100) * (end - start))
                 
                 if (client) {
+                    console.log("waiting for query: ", `
+                        query{
+                            flight(fid: ${fid}) {
+                                row_by_time(time: "${format(time, 'yyyy-MM-dd HH:mm:ss')}") {
+                                    params(names: [${mod_params.map(param => {return '"' + param + '"'})}]) {
+                                        name
+                                        value
+                                    }
+                                }
+                            }
+                        }`)
                     const {data, error} = await client.query({
                         query: gql`
                             query{
@@ -72,10 +83,12 @@ export async function CalculateFlights(flights, position, mode, setMapData, clie
                         //         }
                         //     }`
                         })
+                    console.log("query finished..")
                     if (error) {
                         console.log('Error fetching data:', error);
                         return;
                     }
+                    console.log("data: ", data)
                     let currData = {}
                     if (data && data['flight'] && data['flight']['row_by_time']) {
                         data['flight']['row_by_time']['params'].map(param => currData[param['name']] = param['value'])
@@ -83,6 +96,7 @@ export async function CalculateFlights(flights, position, mode, setMapData, clie
                     }
                 }
             }
+            console.log("totalData with if:", totalData)
             if (Object.keys(totalData)) {
                 setMapData(totalData)
             }
@@ -94,6 +108,17 @@ export async function CalculateFlights(flights, position, mode, setMapData, clie
                 let time = new Date(position * 1000 + dateRange[0].getTime()) 
                 for (let fid in flights) {
                     if (client) {
+                        console.log("waiting for query: ", `
+                            query{
+                                flight(fid: ${fid}) {
+                                    row_by_time(time: "${format(time, 'yyyy-MM-dd HH:mm:ss')}") {
+                                        params(names: [${mod_params.map(param => {return '"' + param + '"'})}]) {
+                                            name
+                                            value
+                                        }
+                                    }
+                                }
+                            }`)
                         const {data, error} = await client.query({
                             query: gql`
                                 query{
@@ -116,11 +141,12 @@ export async function CalculateFlights(flights, position, mode, setMapData, clie
                             //         }
                             //     }`
                             })
+                        console.log("query finished..")
                         if (error) {
                             console.log('Error fetching data:', error);
                             return;
                         }
-                        // console.log(data)
+                        console.log("data: ", data)
                         let currData = {}
                         if (data && data['flight'] && data['flight']['row_by_time']) {
                             data['flight']['row_by_time']['params'].map(param => currData[param['name']] = param['value'])
@@ -128,6 +154,7 @@ export async function CalculateFlights(flights, position, mode, setMapData, clie
                         }
                     }
                 }
+                console.log("totalData:", totalData)
                 setMapData(totalData)
             }
         }

@@ -9,6 +9,7 @@ import MultiFlightTable from './components/MultiPlaneTable.jsx';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import {CalculateFlights, CalculateDateRange} from './components/CalculateFlights.jsx'
 
+
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
   cache: new InMemoryCache()
