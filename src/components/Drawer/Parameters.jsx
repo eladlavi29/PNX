@@ -12,11 +12,13 @@ import {
   ListItem,
   ListItemButton,
   ListItemSecondaryAction,
+
   ListItemText,
   ListItemIcon,
   IconButton,
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
+
 import CloseIcon from "@mui/icons-material/Close";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -64,7 +66,6 @@ export default function Parameters({ allParams, params, setParams }) {
         </DrawerHeader>
         <Divider />
         <Autocomplete
-          clearOnEscape
           disablePortal
           id="add-param"
           value={textValue}
@@ -91,11 +92,6 @@ export default function Parameters({ allParams, params, setParams }) {
                 }}
               >
                 <ListItemText primary={param} />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end" onClick={() => handleRemove(param)}>
-                    <CloseIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
               </ListItemButton>
             </ListItem>
           ))}

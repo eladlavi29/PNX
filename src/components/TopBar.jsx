@@ -26,6 +26,8 @@ export default function MenuAppBar({
   allParams,
   params,
   setParams,
+  tableWindowSize,
+  setTableWindowSize,
 }) {
   return (
     <Box sx={{ width: "100vw" }}>
@@ -51,21 +53,38 @@ export default function MenuAppBar({
             setParams={setParams}
           />
           <Box
+
             sx={{
               position: "absolute",
               left: "50%",
               transform: "translateX(-50%)",
             }}
           >
-            <Typography
-              variant="h4"
-              fontFamily={'"Segoe UI"'}
-              fontWeight={"bold"}
-              color={"white"}
-            >
-              LionFish
-            </Typography>
-          </Box>
+
+            LionFish
+          </Typography> */}
+          <DrawerButton
+            insertedQueryJson={insertedQueryJson}
+            switch1={switch1}
+            setSwitch1={updateSwitch1}
+            barSpeed={barSpeed}
+            updateBarSpeed={updateBarSpeed}
+            setHeatMapData={setHeatMapData}
+            setShowHeatMap={setShowHeatMap}
+            setFlights={setFlights}
+            setMarkerMapData={setMarkerMapData}
+            query_num={query_num}
+            setQuery_num={setQuery_num}
+            setQueriesDict={setQueriesDict}
+            QueriesDict={QueriesDict}
+            setShowMarkerMap={setShowMarkerMap}
+            allParams={allParams}
+            params={params}
+            setParams={setParams}
+            tableWindowSize={tableWindowSize}
+            setTableWindowSize={setTableWindowSize}
+          />
+
           <DBWindowButton
             setWindowOpen={setDBWindowOpen}
             windowOpen={DBWindowOpen}

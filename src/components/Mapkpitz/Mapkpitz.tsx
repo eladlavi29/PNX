@@ -89,6 +89,7 @@ const Mapkpitz = ({
     return param;
   };
 
+
   // Modify the icon size to make it bigger
   const uavIcon = new L.Icon({
     iconUrl: "/uav.png", // assuming Plane is the path to your icon image
@@ -323,6 +324,7 @@ const Mapkpitz = ({
             </Popup>
           </Marker>
         ))}
+
       </MapContainer>
     </>
   );

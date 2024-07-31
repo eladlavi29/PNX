@@ -40,17 +40,28 @@ def create_json_queries():
     dict_queries['RPM_FOR_FID'] = {'type':'Heat Map', 'params':['fid'], 'params_types':['Number'], 'template': '''query{
         heat_map(query: "select tele_pp_lat as lat,tele_pp_long as lon,tele_rpm as strength from fast_params where fid=$fid$ and tele_pp_lat!=0 and tele_pp_long!=0") {lat lon strength}
     }'''}
-    dict_queries['Plane_1'] = {'type':'Plane', 'params':['fid'], 'params_types':['Number'], 'template': '''query{
+    dict_queries['RPM_THRESH_FID'] = {'type':'Heat Map', 'params':['fid', 'thresh', 'param', 'op', 'norm'], 'params_types':['Number', 'Number', 'String', 'String', 'Number'], 'template': '''
+                                    query{
+  flight(fid: $fid$) {
+    heatmap_from_rows(param: "$param$", thresh: $thresh$, op: "$op$", norm: $norm$) {
+      lat
+      lon
+      strength
+    }
+  } 
+}
+                                      '''}
+    dict_queries['GET_FLIGHT'] = {'type':'Plane', 'params':['fid'], 'params_types':['Number'], 'template': '''query{
         get_flights(query: "select fid, recording_start as start, recording_end as end from metadata where fid=$fid$") {fid start end}
     }'''}
     dict_queries['START_END_FOR_FID'] = {'type':'Marker Map', 'params':['fid'], 'params_types':['Number'], 'template': '''query{
-        marker_map(query: "(select fast_params.tele_pp_lat as lat,fast_params.tele_pp_long as lon,'start: fid=$fid$' as content from fast_params,flight_to_fid where fast_params.fid=$fid$ and flight_to_fid.fid=$fid$ and fast_params.tele_pp_lat!=0 and fast_params.tele_pp_long!=0 order by packet asc limit 1) UNION ALL (select fast_params.tele_pp_lat as lat,fast_params.tele_pp_long as lon,'end: fid=$fid$' as content from fast_params,flight_to_fid where fast_params.fid=$fid$ and flight_to_fid.fid=$fid$ and fast_params.tele_pp_lat!=0 and fast_params.tele_pp_long!=0 order by packet desc limit 1)") {
+        marker_map(query: "(select slow_params.tele_pp_lat as lat,slow_params.tele_pp_long as lon,'start: fid=$fid$' as content from slow_params where slow_params.fid = $fid$ and slow_params.tele_pp_lat!=0 and slow_params.tele_pp_long!=0 order by packet asc limit 1) UNION ALL (select slow_params.tele_pp_lat as lat,slow_params.tele_pp_long as lon,'start: fid=$fid$' as content from slow_params where slow_params.fid = $fid$ and slow_params.tele_pp_lat!=0 and slow_params.tele_pp_long!=0 order by packet desc limit 1)") {
         lat lon content}
         }'''}
 
-    dict_queries['STAM'] = {'type':'Marker Map', 'params':['fid', 'number', 'string', 'region', 'dateFrom', 'dateTo', 'timeFrom', 'timeTo'], 'params_types':['Number', 'Number', 'String', 'Region', 'Date', 'Date', 'Time', 'Time'], 'template': '''query{
-        fid: $fid$, number: $number$, string: $string$, region: $region, dateFrom: $dateFrom$, dateTo: $dateTo$, timeFrom: $timeFrom$, timeTo: $timeTo$
-        }'''}
+    # dict_queries['STAM'] = {'type':'Marker Map', 'params':['fid', 'number', 'string', 'region', 'dateFrom', 'dateTo', 'timeFrom', 'timeTo'], 'params_types':['Number', 'Number', 'String', 'Region', 'Date', 'Date', 'Time', 'Time'], 'template': '''query{
+    #     fid: $fid$, number: $number$, string: $string$, region: $region, dateFrom: $dateFrom$, dateTo: $dateTo$, timeFrom: $timeFrom$, timeTo: $timeTo$
+    #     }'''}
     
     dict_queries['Mul_Planes'] = {'type':'Plane', 'params':['fid'], 'params_types':['Number'], 'template': '''query{
       get_flights(query: "select fid, recording_start as start, recording_end as end from metadata where fid%2=0") {fid start end}
@@ -61,7 +72,8 @@ def create_json_queries():
     dict_types = {'Heat Map': ['RPM_FOR_FID'], 'Marker Map':['START_END_FOR_FID', 'STAM'] , 'Plane':['Plane_1','Mul_Planes'] }
     
     total_dict = {'queries':dict_queries, 'types': dict_types}
-  
+    # print(total_dict['queries']['RPM_THRESH_FID'])
+    # print(total_dict['types']['Heat Map'])
     with open("queries.json", "w") as f:
         json.dump(total_dict, f)
 

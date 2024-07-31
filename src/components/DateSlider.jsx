@@ -16,6 +16,12 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import FastRewindIcon from "@mui/icons-material/FastRewind";
 
+function relShift(number) {
+  return number / 4;
+}
+function absShift(number) {
+  return number * 10;
+}
 const DateSlider = ({
   start,
   end,
@@ -26,6 +32,7 @@ const DateSlider = ({
   show,
   speed,
   setSpeed,
+
 }) => {
   //const [start, setStart] = useState(new Date("2023-02-11T11:23:00"));
   //const [end, setEnd] = useState(new Date("2023-02-12T19:43:00"));
@@ -49,27 +56,57 @@ const DateSlider = ({
 
     return differenceInSeconds;
   };
+  useEffect(() => {
+    if (isPlaying) {
+      handlePlayStop();
+    }
+    if (mode === "REL") {
+      setStep(relShift(speed));
+    } else {
+      setStep(absShift(speed));
+    }
+  }, [speed]);
 
   useEffect(() => {
+    //changed
     let differenceInSeconds = calculateDateDifferenceInSeconds(start, end);
     setMax(differenceInSeconds);
     setValue(differenceInSeconds / 2);
-    setStep(60);
+    if (isPlaying) {
+      handlePlayStop();
+    }
+    setMode("ABS");
   }, [start, end]);
 
   useEffect(() => {
+    // solved problem #1 - need to be before the next
+    if (value >= max) {
+      setValue(max);
+      if (isPlaying) {
+        handlePlayStop();
+      }
+    }
+    if (value <= min) {
+      console.log("value is less than min");
+      setValue(min);
+    }
+  }, [value, isPlaying]);
+
+  useEffect(() => {
+    if (isPlaying) {
+      //solved problem #2
+      handlePlayStop();
+    }
     if (mode === "REL") {
       setMax(100);
       setValue(50);
-      setStep(0.1);
-      // console.log(value);
+      setStep(relShift(speed));
     } else {
       let differenceInSeconds = calculateDateDifferenceInSeconds(start, end);
       setMax(differenceInSeconds);
       setValue(differenceInSeconds / 2);
-      setStep(60);
+      setStep(absShift(speed));
     }
-    setIsPlaying(false);
   }, [mode]);
 
   const handlePlayStop = () => {
@@ -94,6 +131,9 @@ const DateSlider = ({
   };
 
   const handleModeChange = (event, newMode) => {
+    if (newMode === null) {
+      return;
+    }
     setMode(newMode);
   };
 

@@ -8,7 +8,6 @@ const client = new ApolloClient({
   cache: new InMemoryCache()
 });
 
-
 // import queries_dict from "./queries.json";
 let queries_dict = {}
 await client.query({query: gql`
@@ -36,7 +35,6 @@ await client.query({query: gql`
   // console.log(Object.keys(queries_dict['types']))
   // // console.log(`qs are: ${JSON.stringify(queries_dict, null, 2)}`)
 })
-
 
 
 export function getTypeofQuery(q_name) {
@@ -196,6 +194,12 @@ export function return_res_good_structure(copy, query_type){
 function fix_data_structure(data, query_type, setDict, currDict, query_num, setQuery_num){
   switch(query_type){
     case 'Heat Map':
+      if (data && data['flight'] && data['flight']['heatmap_from_rows']) {
+        let res = data['flight']['heatmap_from_rows'].map((dict) => (
+          ([dict["lat"],dict["lon"],dict["strength"]]))
+        );
+        return res;
+      }
       setQuery_num(query_num+1)
       let res =  (data["heat_map"]).map((dict) => (
         ([dict["lat"],dict["lon"],dict["strength"]])
@@ -203,11 +207,19 @@ function fix_data_structure(data, query_type, setDict, currDict, query_num, setQ
       return res;
 
     case 'Plane':
+      let dict = (data["get_flights"])[0]
+      // console.log(`dict is ${dict["fid"]}`)
+      let d_start = new Date(dict['start']);
+      // console.log("actual date: ", new Date(dict["start"]))
+      // d_start.setSeconds(d_start.getSeconds() + Math.floor(dict["start"]/1000));
+      
+      let d_end = new Date(dict['end']);
+      // d_end.setSeconds(d_end.getSeconds() + Math.floor(dict["end"]/1000));
+      let fid_1 = dict["fid"]
 
       let dict_list = (data["get_flights"])
 
       console.log("dict_list: ", dict_list)
-
       var obj={}
       for (let i = 0; i < dict_list.length; i++) {
         let dict = dict_list[i]
