@@ -106,6 +106,7 @@ export async function CalculateFlights(flights, position, mode, setMapData, clie
             let totalData = {}
             if (dateRange[0] && dateRange[1]) {
                 let time = new Date(position * 1000 + dateRange[0].getTime()) 
+                time.setHours(time.getHours() + 2);
                 for (let fid in flights) {
                     if (client) {
                         console.log("waiting for query: ", `
