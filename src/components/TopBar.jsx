@@ -53,16 +53,20 @@ export default function MenuAppBar({
             setParams={setParams}
           />
           <Box
-
             sx={{
               position: "absolute",
               left: "50%",
               transform: "translateX(-50%)",
             }}
           >
-
-            LionFish
-          </Typography> */}
+            <Typography
+              variant="h4"
+              component="div"
+              sx={{ flexGrow: 1, fontWeight: "bold" }}
+            >
+              LionFish
+            </Typography>
+          </Box>
           <DrawerButton
             insertedQueryJson={insertedQueryJson}
             switch1={switch1}
