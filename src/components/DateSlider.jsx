@@ -16,7 +16,17 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import FastRewindIcon from "@mui/icons-material/FastRewind";
 
-const DateSlider = ({ start, end, value, setValue, mode, setMode, show, speed, setSpeed}) => {
+const DateSlider = ({
+  start,
+  end,
+  value,
+  setValue,
+  mode,
+  setMode,
+  show,
+  speed,
+  setSpeed,
+}) => {
   //const [start, setStart] = useState(new Date("2023-02-11T11:23:00"));
   //const [end, setEnd] = useState(new Date("2023-02-12T19:43:00"));
   const [min, setMin] = useState(0);
@@ -68,7 +78,7 @@ const DateSlider = ({ start, end, value, setValue, mode, setMode, show, speed, s
     } else {
       intervalRef.current = setInterval(() => {
         setValue((prevValue) => Math.min(prevValue + step, max));
-      }, 1); // Adjust the interval as needed
+      }, 100); // Adjust the interval as needed
     }
     // console.log(value);
     // console.log(max);
@@ -145,101 +155,101 @@ const DateSlider = ({ start, end, value, setValue, mode, setMode, show, speed, s
       }}
       style={{ zIndex: 3 }}
     >
-    <Box
-      style={{
-        zIndex: 1000,
-        display: "flex",
-        alignItems: "center",
-        backgroundColor: "#fff",
-        padding: "15px",
-        borderRadius: "10px",
-      }}
-    >
       <Box
         style={{
+          zIndex: 1000,
           display: "flex",
           alignItems: "center",
-          marginRight: "20px",
+          backgroundColor: "#fff",
+          padding: "15px",
+          borderRadius: "10px",
         }}
       >
-        <IconButton onClick={handleDecrease}>
-          <FastRewindIcon />
-        </IconButton>
-        <IconButton onClick={handlePlayStop}>
-          {isPlaying ? <PauseCircleIcon /> : <PlayCircleIcon />}
-        </IconButton>
-        <IconButton onClick={handleIncrease}>
-          <FastForwardIcon />
-        </IconButton>
-      </Box>
-      <Box
-        style={{
-          margin: 0,
-          marginRight: "20px",
-        }}
-      >
-        <Typography
+        <Box
           style={{
-            color: "black",
+            display: "flex",
+            alignItems: "center",
+            marginRight: "20px",
           }}
         >
-          {mode === "REL" ? "0%" : getNiceDateTime(start)}
-        </Typography>
-      </Box>
+          <IconButton onClick={handleDecrease}>
+            <FastRewindIcon />
+          </IconButton>
+          <IconButton onClick={handlePlayStop}>
+            {isPlaying ? <PauseCircleIcon /> : <PlayCircleIcon />}
+          </IconButton>
+          <IconButton onClick={handleIncrease}>
+            <FastForwardIcon />
+          </IconButton>
+        </Box>
+        <Box
+          style={{
+            margin: 0,
+            marginRight: "20px",
+          }}
+        >
+          <Typography
+            style={{
+              color: "black",
+            }}
+          >
+            {mode === "REL" ? "0%" : getNiceDateTime(start)}
+          </Typography>
+        </Box>
 
-      <Slider
-        value={value}
-        onChange={(event, newValue) => setValue(newValue)}
-        aria-labelledby="continuous-slider"
-        style={{ flex: "2", marginRight: "20px"}}
-        min={min}
-        max={max}
-        step={1}
-        getAriaValueText={
-          mode == "REL" ? calculatePercantage : calculateNewDate
-        }
-        valueLabelFormat={
-          mode == "REL" ? calculatePercantage : calculateNewDate
-        }
-        valueLabelDisplay="off"
-      />
-      <Box
-        style={{
-          margin: 0,
-          marginRight: "20px",
-        }}
-      >
-        <Typography
+        <Slider
+          value={value}
+          onChange={(event, newValue) => setValue(newValue)}
+          aria-labelledby="continuous-slider"
+          style={{ flex: "2", marginRight: "20px" }}
+          min={min}
+          max={max}
+          step={1}
+          getAriaValueText={
+            mode == "REL" ? calculatePercantage : calculateNewDate
+          }
+          valueLabelFormat={
+            mode == "REL" ? calculatePercantage : calculateNewDate
+          }
+          valueLabelDisplay="off"
+        />
+        <Box
           style={{
-            color: "black",
+            margin: 0,
+            marginRight: "20px",
           }}
         >
-          {mode === "REL" ? "100%" : getNiceDateTime(end)}
-        </Typography>
-      </Box>
-      <div>
-        <ToggleButtonGroup
-          value={mode}
-          exclusive
-          onChange={handleModeChange}
-          aria-label="text alignment"
-        >
-          <ToggleButton value="ABS" aria-label="absolute">
-            ABS
-          </ToggleButton>
-          <ToggleButton value="REL" aria-label="relative">
-            REL
-          </ToggleButton>
-        </ToggleButtonGroup>
-        {/* <IconButton onClick={handleDecrease}>
+          <Typography
+            style={{
+              color: "black",
+            }}
+          >
+            {mode === "REL" ? "100%" : getNiceDateTime(end)}
+          </Typography>
+        </Box>
+        <div>
+          <ToggleButtonGroup
+            value={mode}
+            exclusive
+            onChange={handleModeChange}
+            aria-label="text alignment"
+          >
+            <ToggleButton value="ABS" aria-label="absolute">
+              ABS
+            </ToggleButton>
+            <ToggleButton value="REL" aria-label="relative">
+              REL
+            </ToggleButton>
+          </ToggleButtonGroup>
+          {/* <IconButton onClick={handleDecrease}>
           <AddIcon />
         </IconButton>
         <Typography>fun</Typography>
         <IconButton onClick={handleIncrease}>
           <RemoveIcon />
         </IconButton> */}
-      </div>
-    </Box>
+        </div>
+      </Box>
     </Drawer>
   );
 };
