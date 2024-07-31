@@ -63,7 +63,13 @@ def create_json_queries():
     #     fid: $fid$, number: $number$, string: $string$, region: $region, dateFrom: $dateFrom$, dateTo: $dateTo$, timeFrom: $timeFrom$, timeTo: $timeTo$
     #     }'''}
     
-    dict_types = {'Heat Map': ['RPM_FOR_FID', 'RPM_THRESH_FID'], 'Marker Map':['START_END_FOR_FID'] , 'Plane':['GET_FLIGHT'] }
+    dict_queries['Mul_Planes'] = {'type':'Plane', 'params':['fid'], 'params_types':['Number'], 'template': '''query{
+      get_flights(query: "select fid, recording_start as start, recording_end as end from metadata where fid%2=0") {fid start end}
+    }'''}
+
+
+
+    dict_types = {'Heat Map': ['RPM_FOR_FID'], 'Marker Map':['START_END_FOR_FID', 'STAM'] , 'Plane':['Plane_1','Mul_Planes'] }
     
     total_dict = {'queries':dict_queries, 'types': dict_types}
     # print(total_dict['queries']['RPM_THRESH_FID'])

@@ -32,19 +32,35 @@ export default function MenuAppBar({
   return (
     <Box sx={{ width: "100vw" }}>
       <AppBar position="static" color="primary">
-        <Toolbar>
-          {/* <Typography
-            variant="h4"
-            fontFamily={'"Segoe UI"'}
-            fontWeight={"bold"}
-            color={"white"}
+        <Toolbar sx={{ position: "relative" }}>
+          <DrawerButton
+            insertedQueryJson={insertedQueryJson}
+            switch1={switch1}
+            setSwitch1={updateSwitch1}
+            barSpeed={barSpeed}
+            updateBarSpeed={updateBarSpeed}
+            setHeatMapData={setHeatMapData}
+            setShowHeatMap={setShowHeatMap}
+            setFlights={setFlights}
+            setMarkerMapData={setMarkerMapData}
+            query_num={query_num}
+            setQuery_num={setQuery_num}
+            setQueriesDict={setQueriesDict}
+            QueriesDict={QueriesDict}
+            setShowMarkerMap={setShowMarkerMap}
+            allParams={allParams}
+            params={params}
+            setParams={setParams}
+          />
+          <Box
+
             sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              position: "absolute"
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
             }}
           >
+
             LionFish
           </Typography> */}
           <DrawerButton

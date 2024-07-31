@@ -225,7 +225,9 @@ function fix_data_structure(data, query_type, setDict, currDict, query_num, setQ
         let dict = dict_list[i]
         console.log("dict: ", dict)
         let d_start = new Date(dict['start']);
+        d_start.setHours(d_start.getHours() - 2);
         let d_end = new Date(dict['end']);
+        d_end.setHours(d_end.getHours() - 2);
         let fid_1 = dict["fid"]
       
         obj[fid_1] = [d_start,d_end];
@@ -302,7 +304,11 @@ export async function exeQuery(query, query_type, setData, setDict, currDict, qu
   console.log("RES: ", res)
 
   if(setData!=null){
+    console.log("HERE-GOOD")
     setData(res)
+  }
+  else{
+    console.log("HERE-BAD")
   }
 
   return true

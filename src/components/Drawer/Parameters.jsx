@@ -11,12 +11,15 @@ import {
   Divider,
   ListItem,
   ListItemButton,
+  ListItemSecondaryAction,
+
   ListItemText,
   ListItemIcon,
   IconButton,
 } from "@mui/material";
 import { styled, useTheme } from "@mui/material/styles";
 
+import CloseIcon from "@mui/icons-material/Close";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChecklistIcon from "@mui/icons-material/Checklist";
@@ -63,7 +66,6 @@ export default function Parameters({ allParams, params, setParams }) {
         </DrawerHeader>
         <Divider />
         <Autocomplete
-          // clearOnEscape
           disablePortal
           id="add-param"
           value={textValue}

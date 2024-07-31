@@ -15,6 +15,7 @@ import FastForwardIcon from "@mui/icons-material/FastForward";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import FastRewindIcon from "@mui/icons-material/FastRewind";
+
 function relShift(number) {
   return number / 4;
 }
@@ -30,6 +31,8 @@ const DateSlider = ({
   setMode,
   show,
   speed,
+  setSpeed,
+
 }) => {
   //const [start, setStart] = useState(new Date("2023-02-11T11:23:00"));
   //const [end, setEnd] = useState(new Date("2023-02-12T19:43:00"));
@@ -112,7 +115,7 @@ const DateSlider = ({
     } else {
       intervalRef.current = setInterval(() => {
         setValue((prevValue) => Math.min(prevValue + step, max));
-      }, 1); // Adjust the interval as needed
+      }, 100); // Adjust the interval as needed
     }
     // console.log(value);
     // console.log(max);
@@ -248,7 +251,7 @@ const DateSlider = ({
           valueLabelFormat={
             mode == "REL" ? calculatePercantage : calculateNewDate
           }
-          valueLabelDisplay="auto"
+          valueLabelDisplay="off"
         />
         <Box
           style={{
