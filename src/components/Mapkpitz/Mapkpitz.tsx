@@ -21,7 +21,7 @@ import { gql, useQuery } from "@apollo/client";
 import "leaflet/dist/leaflet.css";
 import "leaflet-draw/dist/leaflet.draw.css";
 import antenas_json from "../../antenas_config.json";
-
+import Button from "@mui/material/Button";
 type direction = 1 | -1;
 const colors = [
   "#2C3E50", // Midnight Blue
@@ -88,7 +88,6 @@ const Mapkpitz = ({
     }
     return param;
   };
-
 
   // Modify the icon size to make it bigger
   const uavIcon = new L.Icon({
@@ -224,8 +223,23 @@ const Mapkpitz = ({
               rotationOrigin="center"
             >
               <Popup>
-                fid: {key} | altitude: {mapData[key].tele_altitude}ft, antena:
+                fid: {key} | altitude: {mapData[key].tele_altitude}ft, antenna:
                 {Math.floor(mapData[key].tele_heading / 100)}
+                <Button
+                  variant="outlined" // Smaller and outlined style
+                  size="small" // Smaller size
+                  color="primary"
+                  onClick={() => {
+                    const url = `https://${key}.com`;
+                    window.open(url, "_blank");
+                  }}
+                  sx={{
+                    marginLeft: "8px",
+                    textTransform: "none", // Prevents uppercase transformation
+                  }}
+                >
+                  Joey
+                </Button>
               </Popup>
               <Polyline
                 pathOptions={{
@@ -324,7 +338,6 @@ const Mapkpitz = ({
             </Popup>
           </Marker>
         ))}
-
       </MapContainer>
     </>
   );
