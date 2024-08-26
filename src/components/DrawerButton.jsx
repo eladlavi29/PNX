@@ -97,7 +97,7 @@ export default function DrawerButton({
         </DrawerHeader>
         <Divider />
         <List>
-          {["Build Query", "Parameters", "Settings"].map((text) => (
+          {["Build Query", "Parameters", "Settings", "Help"].map((text) => (
             <div key={text}>
               {(() => {
                 switch (text) {
